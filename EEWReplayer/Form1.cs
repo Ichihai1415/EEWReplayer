@@ -6,5 +6,13 @@ namespace EEWReplayer
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Form2_progress f = new Form2_progress();
+            f.Show();
+
+            //f.displayText.Text += "\nbbbb";
+        }
     }
 }
