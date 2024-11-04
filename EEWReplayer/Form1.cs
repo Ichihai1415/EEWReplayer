@@ -9,10 +9,10 @@ namespace EEWReplayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Form2_progress f = new Form2_progress();
+            Form2_progress f = new();
             f.Show();
 
-            //f.displayText.Text += "\nbbbb";
+            //f.displayText.Text += "\noob";
         }
     }
 }
