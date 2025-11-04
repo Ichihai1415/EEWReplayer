@@ -90,7 +90,7 @@ namespace EEWReplayer.Utils
                             new()
                             {
                                 MaxIntensityD = intensity,
-                                Areas = areas,
+                                AreaNames = areas.Split('，'),
                                 AreaCodes = AreasSt2Ints(areas, '、')
                             }
                         ]);
@@ -106,7 +106,7 @@ namespace EEWReplayer.Utils
                         intAreas[serialLast].Add(new()
                         {
                             MaxIntensityD = intensity,
-                            Areas = areas,
+                            AreaNames = areas.Split('，'),
                             AreaCodes = AreasSt2Ints(areas, '、')
                         });
                 }
@@ -119,7 +119,7 @@ namespace EEWReplayer.Utils
                         var intArea = intAreas[serialLast][i];
                         if (intArea.MaxIntensityD == intLast)
                         {
-                            intAreas[serialLast][i].Areas += areas;
+                            intAreas[serialLast][i].AreaNames = [.. intAreas[serialLast][i].AreaNames.Concat(areas.Split('，'))];
                             break;
                         }
                     }
@@ -153,7 +153,7 @@ namespace EEWReplayer.Utils
                         new()
                         {
                             MaxIntensityD = new DetailedIntensity(intRef),
-                            Areas = "(エリアなし)",
+                            AreaNames = ["(エリアなし)"],
                             AreaCodes = []
                         }
                     ];

@@ -1,9 +1,7 @@
 ﻿using AngleSharp.Html.Parser;
 using EEWReplayer.Utils;
 using System.Data;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace EEWReplayer
 {
@@ -12,12 +10,7 @@ namespace EEWReplayer
 
         public static readonly HttpClient client = new();
         public static readonly HtmlParser parser = new();
-        public static readonly JsonSerializerOptions options = new()
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            WriteIndented = true,
-            NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
-        };
+
         public Form_GetAllEEW()
         {
             InitializeComponent();
@@ -49,7 +42,7 @@ namespace EEWReplayer
                 Form1.f.AddLine(eqCells[0].TextContent + "　" + detailUrl);
                 var d = await GetData.GetDetail(detailUrl);
                 Directory.CreateDirectory("datas");
-                File.WriteAllText("datas\\" + detailUrl.Split('/')[9] + ".json", JsonSerializer.Serialize(d, options));
+                File.WriteAllText("datas\\" + detailUrl.Split('/')[9] + ".json", JsonSerializer.Serialize(d, Form1.options));
             }
 
 

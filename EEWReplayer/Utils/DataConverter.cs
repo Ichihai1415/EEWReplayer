@@ -16,13 +16,16 @@ namespace EEWReplayer.Utils
 
         public static int[] AreasSt2Ints(string[] areas)
         {
-            return areas.Select(area =>
+            return [.. areas.Select(area =>
             {
-                if (ConvertSource.AreaForecastE_N2C.TryGetValue(area, out var code))
+                if (ConvertSource.AreaForecastE_N2C.TryGetValue(area.Replace("支庁", "地方"), out var code))
                     return code;
                 else
+                {
+                    Console.WriteLine($"code not exist: {area}");
                     return -1;
-            }).Where(value => value != -1).ToArray();
+                }
+            }).Where(value => value != -1)];
         }
         public static int[] AreasSt2Ints(string areasSt, char separator, StringSplitOptions splitOptions = StringSplitOptions.None)
         {

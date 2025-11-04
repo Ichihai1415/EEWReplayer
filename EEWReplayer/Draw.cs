@@ -58,7 +58,7 @@ namespace EEWReplayer
                     {
                         if ((int)a.MaxIntensityD.From > 10)
                             continue;
-                        Console.WriteLine($"  {a.MaxIntensityD}  {a.Areas}");
+                        Console.WriteLine($"  {a.MaxIntensityD}  {a.AreaNames}");
                     }
                 }
                 Console.WriteLine();

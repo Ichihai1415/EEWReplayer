@@ -44,8 +44,8 @@ namespace EEWReplayer.Utils
         public Data(Data src)
         {
             Description = src.Description;
-            Earthquakes = src.Earthquakes.Select(srcEq => srcEq.DeepCopy()).ToArray();
-            EEWLists = src.EEWLists.Select(srcEEWLists => srcEEWLists).ToArray();
+            Earthquakes = [.. src.Earthquakes.Select(srcEq => srcEq.DeepCopy())];
+            EEWLists = [.. src.EEWLists.Select(srcEEWLists => srcEEWLists)];
         }
 
         public Data DeepCopy() => new(this);
@@ -96,7 +96,7 @@ namespace EEWReplayer.Utils
             public EEWList(EEWList src)
             {
                 ID = src.ID;
-                EEWs = src.EEWs.Select(srcEEW => srcEEW.DeepCopy()).ToArray();
+                EEWs = [.. src.EEWs.Select(srcEEW => srcEEW.DeepCopy())];
             }
             public EEWList DeepCopy() => new(this);
 
@@ -119,7 +119,7 @@ namespace EEWReplayer.Utils
                     Magnitude = src.Magnitude;
                     IsWarn = src.IsWarn;
                     MaxIntensity = src.MaxIntensity;
-                    IntensityAreas = src.IntensityAreas.Select(srcArea => srcArea.DeepCopy()).ToArray();
+                    IntensityAreas = [.. src.IntensityAreas.Select(srcArea => srcArea.DeepCopy())];
                 }
 
                 public EEW DeepCopy() => new(this);
@@ -135,20 +135,34 @@ namespace EEWReplayer.Utils
                 public bool IsWarn { get; set; } = false;
                 public Intensity MaxIntensity { get; set; } = Intensity.Null;
 
+                public (string[]? warnAreas, int[]? warnCodes) GetWarningAreas()
+                {
+                    var warnAreas = IntensityAreas.Where(x => (Intensity.S7 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.S4) || (Intensity.L4 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.L3));
+                    var areaNames = warnAreas.SelectMany(x => x.AreaNames).Distinct().ToArray();
+                    var areaCodes = warnAreas.SelectMany(x => x.AreaCodes).Distinct().ToArray();
+                    if (areaNames.Length != areaCodes.Length)
+                        throw new Exception($"area-code is not fully converted({areaNames.Length}-{areaCodes.Length})");
+                    return (areaNames.Length > 0 ? areaNames : null, areaCodes.Length > 0 ? areaCodes : null);
+                }
+
                 public IntensityArea[] IntensityAreas { get; set; } = [];
                 public class IntensityArea
                 {
+
                     public IntensityArea() { }
+
                     public IntensityArea(IntensityArea src)
                     {
                         MaxIntensityD = src.MaxIntensityD.DeepClone();
-                        Areas = src.Areas;
-                        AreaCodes = src.AreaCodes.Select(x => x).ToArray();
+                        AreaNames = [.. src.AreaNames.Select(x => x)];
+                        AreaCodes = [.. src.AreaCodes.Select(x => x)];
                     }
+
                     public IntensityArea DeepCopy() => new(this);
 
                     public DetailedIntensity MaxIntensityD { get; set; } = new DetailedIntensity();
-                    public string Areas { get; set; } = "";
+                    public string[] AreaNames { get; set; } = [];
+
                     public int[] AreaCodes { get; set; } = [];
                 }
 
