@@ -49,8 +49,9 @@ namespace EEWReplayer.Utils
 
             public DetailedIntensity(string eewShindo)
             {
-                eewShindo = eewShindo.Replace("最大震度５弱程度以上と推定", "level").Replace("最大", "").Replace("震度", "").Replace("程度", "");
-                if (eewShindo.EndsWith("以上"))
+                eewShindo = eewShindo.Replace(" ", "").Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定", "");
+                //この時点で（震度）以上か<level>に　「と推定」は初期のみ
+                if (eewShindo.Contains("以上"))
                 {
                     var iInt = ConvertSource.Shindo_StringEnum[eewShindo.Replace("以上", "")];
                     this = new DetailedIntensity(iInt, Intensity.Over, iInt);

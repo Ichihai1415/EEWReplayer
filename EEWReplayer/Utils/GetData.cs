@@ -31,6 +31,8 @@ namespace EEWReplayer.Utils
                 {
                     var originTimeSt = hypoCells[0].TextContent.Replace("元", "1").Replace("月", "/").Replace("日", " ").Replace("時", ":").Replace("分", ":").Replace("秒", "");//令和 6年06月03日06時31分40.3秒
                     var originTimeSts = originTimeSt.Split("年");
+                    if (originTimeSt.EndsWith(':'))//速報値の時は分で終わる
+                        originTimeSts[1] = originTimeSts[1][..^1];
                     var year = originTimeSts[0].StartsWith("平成") ? int.Parse(originTimeSts[0].Replace("平成 ", "200").Replace("平成", "20")) - 12
                         : originTimeSts[0].StartsWith("令和") ? int.Parse(originTimeSts[0].Replace("令和 ", "200").Replace("令和", "20")) + 18 : 3000;
                     var originTime = DateTime.Parse(year + "/" + originTimeSts[1]);
@@ -134,6 +136,8 @@ namespace EEWReplayer.Utils
             var detectTime = DateTime.MinValue;
             foreach (var eewRow in eewListRows)
             {
+                if (eewRow.GetAttribute("class") == "hide-tr")
+                    continue;
                 var eewCells = eewRow.QuerySelectorAll("td");
                 if (eewCells.Length == 8)//新版の展開式震度一覧を除外
                 {
@@ -173,13 +177,12 @@ namespace EEWReplayer.Utils
             //Console.WriteLine("完了");
             return new Data
             {
-                Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成,EEWでの発生時刻は実際の値(暫定値)を使用しているため注意してください,詳細: " + url,
+                Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成,通常は暫定値ですが、新しく未更新の場合は速報値となります,各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます,詳細: " + url,
+                Created = DateTime.Now,
+                Version = Form1.VERSION,
                 Earthquakes = [.. eqInfo_],
-                EEWLists = [new Data.EEWList([.. eew])]
+                EEWLists = [new Data.EEWList([.. eew], "JMA-WEB")]
             };
         }
-
-
     }
-
 }

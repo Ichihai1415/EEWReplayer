@@ -6,7 +6,9 @@ namespace EEWReplayer.Utils
     public static class DataConverter
     {
         public static double LatLon60to10(string latLon)
-        {//137°18.1′	
+        {//137°18.1′	速報値の時はない
+            if (!latLon.Contains('′'))
+                return double.Parse(latLon);
             var dmSt = latLon.Replace("′", "").Split("°");
             return double.Parse(dmSt[0]) + double.Parse(dmSt[1]) / 60;
         }
@@ -66,10 +68,15 @@ namespace EEWReplayer.Utils
 
         public static class ConvertSource
         {
+            //使用時注意:
+            //eewShindo = eewShindo.Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定","");
+            //この時点で（震度）以上か<level>に　「と推定」は初期のみ
+
 
             public static readonly Dictionary<string, Intensity> Shindo_StringEnum = new()//"震度"等余計な文字なし　0にしたい場合明示的に"０"に
             {
-                { "０", Intensity.S0 },
+                { "０", Intensity.S0 },//基本ない
+                { "―", Intensity.S0 },//以前のみ？おそらく震度0の「不明」　https://www.data.jma.go.jp/eew/data/nc/pub_hist/2009/08/20090825063712/content/content_out.html
                 { "１", Intensity.S1 },
                 { "２", Intensity.S2 },
                 { "３", Intensity.S3 },
@@ -82,7 +89,7 @@ namespace EEWReplayer.Utils
                 { "不明", Intensity.Unknown },
                 { "—", Intensity.Unknown },
                 { "---", Intensity.Unknown },
-                { "level", Intensity.Level },
+                { "<level>", Intensity.Level },
                 { "予測なし", Intensity.None },
                 { "", Intensity.None },
                 { "長周期地震動階級１", Intensity.L1 },
@@ -103,7 +110,7 @@ namespace EEWReplayer.Utils
                 { Intensity.S6l, "６弱" },
                 { Intensity.S6u, "６強" },
                 { Intensity.S7, "７" },
-                { Intensity.None, "" },
+                { Intensity.None, "予測なし" },
                 { Intensity.Unknown, "不明" },
                 { Intensity.Level, "最大震度５弱程度以上と推定" },
                 { Intensity.L1, "長周期地震動階級１" },

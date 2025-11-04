@@ -50,6 +50,10 @@ namespace EEWReplayer.Utils
 
         public Data DeepCopy() => new(this);
 
+        public string Version { get; set; } = "";
+
+        public DateTime Created { get; set; } = DateTime.MinValue;
+
         public string Description { get; set; } = "";
 
         public Earthquake[] Earthquakes { get; set; } = [];
