@@ -74,5 +74,10 @@ namespace EEWReplayer
             Directory.CreateDirectory("Log");
             File.WriteAllText("Log\\" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log", TB_log.Text);
         }
+
+        public void AddLine(string text)
+        {
+            displayText.Text += text + "\n";
+        }
     }
 }
