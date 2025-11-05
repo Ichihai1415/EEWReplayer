@@ -21,6 +21,7 @@ namespace EEWReplayer.Utils
             S6l = 7,
             S6u = 8,
             S7 = 9,
+            L0 = 10,
             L1 = 11,
             L2 = 12,
             L3 = 13,

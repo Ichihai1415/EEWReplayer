@@ -69,6 +69,21 @@ namespace EEWReplayer.Utils
         }
 
 
+        public static (double? lat, double? lon, double? depth) JMAXML_LatLonDepthConverter(string latLonDepText)
+        {
+            //<jmx_eb:Coordinate description="北緯３９．０度 東経１４０．９度 深さ １０ｋｍ">+39.0+140.9-10000/</jmx_eb:Coordinate>
+            //<jmx_eb:Coordinate description="北緯３９．０度 東経１４０．９度 ごく浅い">+39.0+140.9+0/</jmx_eb:Coordinate> 
+            //（※「緊急地震速報（警報）」、「緊急地震速報（予報）」の場合、現行の運用では、震源の深さを「ごく浅い」とせずに、本要素の内容、属性「@description」において、震源の深さを10kmとして扱い発表する。） 
+            //<jmx_eb:Coordinate description="北緯３９．０度 東経１４０．９度 深さは７００ｋｍ以上">+39.0+140.9-700000/</jmx_eb:Coordinate>
+            //<jmx_eb:Coordinate description="北緯３９．０度 東経１４０．９度 深さ不明">+39.0+140.9/</jmx_eb:Coordinate> 
+            //<jmx_eb:Coordinate description="震源要素不明" />
+            var lld = latLonDepText.Replace("/", "").Split(['+', '-']);
+            if (lld.Length < 2)
+                return (null, null, null);
+            return (double.Parse(lld[1]), double.Parse(lld[2]), lld.Length == 4 ? double.Parse(lld[3]) / 1000 : null);
+        }
+
+
         public static class ConvertSource
         {
             //使用時注意:
@@ -101,26 +116,86 @@ namespace EEWReplayer.Utils
                 { "長周期地震動階級４", Intensity.L4 },
             };
 
-            public static readonly Dictionary<Intensity, string> Shindo_EnumString = new()
+            public static Intensity ParseShindoString(string value) => value switch//"震度"等余計な文字なし　0にしたい場合明示的に"０"に
             {
-                { Intensity.S0, "０" },
-                { Intensity.S1, "１" },
-                { Intensity.S2, "２" },
-                { Intensity.S3, "３" },
-                { Intensity.S4, "４" },
-                { Intensity.S5l, "５弱" },
-                { Intensity.S5u, "５強" },
-                { Intensity.S6l, "６弱" },
-                { Intensity.S6u, "６強" },
-                { Intensity.S7, "７" },
-                { Intensity.None, "予測なし" },
-                { Intensity.Unknown, "不明" },
-                { Intensity.Level, "最大震度５弱程度以上と推定" },
-                { Intensity.L1, "長周期地震動階級１" },
-                { Intensity.L2, "長周期地震動階級２" },
-                { Intensity.L3, "長周期地震動階級３" },
-                { Intensity.L4, "長周期地震動階級４" },
+                "０" => Intensity.S0, //基本ない
+                "―" => Intensity.S0, //以前のみ？おそらく震度0の「不明」 https://www.data.jma.go.jp/eew/data/nc/pub_hist/2009/08/20090825063712/content/content_out.html
+                "１" => Intensity.S1,
+                "２" => Intensity.S2,
+                "３" => Intensity.S3,
+                "４" => Intensity.S4,
+                "５弱" => Intensity.S5l,
+                "５強" => Intensity.S5u,
+                "６弱" => Intensity.S6l,
+                "６強" => Intensity.S6u,
+                "７" => Intensity.S7,
+                "不明" => Intensity.Unknown,
+                "—" => Intensity.Unknown,
+                "---" => Intensity.Unknown,
+                "<level>" => Intensity.Level,
+                "予測なし" => Intensity.None,
+                "" => Intensity.None,
+                "長周期地震動階級０" => Intensity.L0,
+                "長周期地震動階級１" => Intensity.L1,
+                "長周期地震動階級２" => Intensity.L2,
+                "長周期地震動階級３" => Intensity.L3,
+                "長周期地震動階級４" => Intensity.L4,
+                _ => Intensity.Unknown // 未定義や異常値は "不明" 扱い
             };
+
+            public static Intensity Shindo_JMAString2Enum(string jmaShindo) => (jmaShindo) switch
+            {
+                "0" => Intensity.S0,
+                "1" => Intensity.S1,
+                "2" => Intensity.S2,
+                "3" => Intensity.S3,
+                "4" => Intensity.S4,
+                "5-" => Intensity.S5l,
+                "5+" => Intensity.S5u,
+                "6-" => Intensity.S6l,
+                "6+" => Intensity.S6u,
+                "7" => Intensity.S7,
+                "over" => Intensity.Over,
+                "不明" => Intensity.Unknown,
+                _ => throw new ArgumentException("引数が正しくありません。")
+            };
+
+            public static Intensity ShindoL_JMAString2Enum(string jmaShindo) => (jmaShindo) switch
+            {
+                "0" => Intensity.L0,
+                "1" => Intensity.L1,
+                "2" => Intensity.L2,
+                "3" => Intensity.L3,
+                "4" => Intensity.L4,
+                "不明" => Intensity.Unknown,
+                _ => throw new ArgumentException("引数が正しくありません。")
+            };
+
+            public static string Shindo_Enum2String(Intensity intensity)
+            {
+                return intensity switch
+                {
+                    Intensity.S0 => "０",
+                    Intensity.S1 => "１",
+                    Intensity.S2 => "２",
+                    Intensity.S3 => "３",
+                    Intensity.S4 => "４",
+                    Intensity.S5l => "５弱",
+                    Intensity.S5u => "５強",
+                    Intensity.S6l => "６弱",
+                    Intensity.S6u => "６強",
+                    Intensity.S7 => "７",
+                    Intensity.None => "予測なし",
+                    Intensity.Unknown => "不明",
+                    Intensity.Level => "最大震度５弱程度以上と推定",
+                    Intensity.L0 => "長周期地震動階級０",
+                    Intensity.L1 => "長周期地震動階級１",
+                    Intensity.L2 => "長周期地震動階級２",
+                    Intensity.L3 => "長周期地震動階級３",
+                    Intensity.L4 => "長周期地震動階級４",
+                    _ => throw new ArgumentException("引数が正しくありません。")
+                };
+            }
 
             #region AreaForecastE_C2N
             public static readonly Dictionary<int, string> AreaForecastE_C2N = new()

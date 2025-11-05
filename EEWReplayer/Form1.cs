@@ -2,6 +2,7 @@ using EEWReplayer.Utils;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using EEWReplayer.Devs;
 
 namespace EEWReplayer
 {
@@ -28,8 +29,10 @@ namespace EEWReplayer
             f.Show();
             //Form_GetAllEEW form_GetAllEEW = new();
             //form_GetAllEEW.Show();
-            Form_StatisticsMaker form_StatisticsMaker = new();
-            form_StatisticsMaker.Show();
+            //Form_StatisticsMaker form_StatisticsMaker = new();
+            //form_StatisticsMaker.Show();
+            Form_DevHelper form_DevHelper = new();
+            form_DevHelper.Show();
 
             //f.displayText.Text += "\noob";
         }
