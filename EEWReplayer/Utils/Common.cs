@@ -34,6 +34,13 @@ namespace EEWReplayer.Utils
             public Intensity To { get; set; } = Intensity.Null;
             public Intensity Max { get; set; } = Intensity.Null;
 
+            public DetailedIntensity()
+            {
+                From = Intensity.Null;
+                To = Intensity.Null;
+                Max = Intensity.Null;
+            }
+
             public DetailedIntensity(Intensity from, Intensity to, Intensity max = Intensity.Null)
             {
                 From = from;
@@ -54,19 +61,19 @@ namespace EEWReplayer.Utils
                 //この時点で（震度）以上か<level>に　「と推定」は初期のみ
                 if (eewShindo.Contains("以上"))
                 {
-                    var iInt = ConvertSource.Shindo_StringEnum[eewShindo.Replace("以上", "")];
+                    var iInt = ConvertSource.Intensity_StringEnum[eewShindo.Replace("以上", "")];
                     this = new DetailedIntensity(iInt, Intensity.Over, iInt);
                 }
                 else if (eewShindo.Contains("から"))
                 {
                     var sInts = eewShindo.Split("から");
-                    var fInt = ConvertSource.Shindo_StringEnum[sInts[0]];
-                    var tInt = ConvertSource.Shindo_StringEnum[sInts[1]];
+                    var fInt = ConvertSource.Intensity_StringEnum[sInts[0]];
+                    var tInt = ConvertSource.Intensity_StringEnum[sInts[1]];
                     this = new DetailedIntensity(fInt, tInt, tInt);
                 }
                 else
                 {
-                    var iInt = ConvertSource.Shindo_StringEnum[eewShindo];
+                    var iInt = ConvertSource.Intensity_StringEnum[eewShindo];
                     this = new DetailedIntensity(iInt, iInt, iInt);
                 }
             }

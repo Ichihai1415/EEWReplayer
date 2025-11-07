@@ -44,7 +44,7 @@ namespace EEWReplayer.Utils
                         HypoLon = LatLon60to10(hypoCells[3].TextContent),
                         HypoDepth = double.Parse(hypoCells[4].TextContent.Replace("km", "")),
                         Magnitude = hypoCells[5].TextContent == "---" || hypoCells[5].TextContent == "不明" ? double.NaN : double.Parse(hypoCells[5].TextContent),
-                        MaxIntensity = ConvertSource.Shindo_StringEnum[hypoCells[6].TextContent]
+                        MaxIntensity = ConvertSource.Intensity_StringEnum[hypoCells[6].TextContent]
                     };
                     if (double.IsNormal(info.Magnitude))
                         if (info.Magnitude > magTemp)

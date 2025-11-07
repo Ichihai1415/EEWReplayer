@@ -119,6 +119,7 @@ namespace EEWReplayer.Utils
                     Magnitude = src.Magnitude;
                     IsWarn = src.IsWarn;
                     MaxIntensity = src.MaxIntensity;
+                    MaxIntensityL = src.MaxIntensityL;
                     IntensityAreas = [.. src.IntensityAreas.Select(srcArea => srcArea.DeepCopy())];
                 }
 
@@ -133,7 +134,8 @@ namespace EEWReplayer.Utils
                 public double HypoDepth { get; set; } = double.NaN;
                 public double Magnitude { get; set; } = double.NaN;
                 public bool IsWarn { get; set; } = false;
-                public Intensity MaxIntensity { get; set; } = Intensity.Null;
+                public DetailedIntensity MaxIntensity { get; set; } = new DetailedIntensity();
+                public DetailedIntensity MaxIntensityL { get; set; } = new DetailedIntensity();
 
                 public (string[]? warnAreas, int[]? warnCodes) GetWarningAreas()
                 {
@@ -148,8 +150,12 @@ namespace EEWReplayer.Utils
                 public IntensityArea[] IntensityAreas { get; set; } = [];
                 public class IntensityArea
                 {
-
-                    public IntensityArea() { }
+                    public IntensityArea(KeyValuePair<DetailedIntensity, List<(string areaName, int areaCode)>> kv)
+                    {
+                        MaxIntensityD = kv.Key.DeepClone();
+                        AreaNames = [.. kv.Value.Select(v => v.areaName)];
+                        AreaCodes = [.. kv.Value.Select(v => v.areaCode)];
+                    }
 
                     public IntensityArea(IntensityArea src)
                     {
@@ -177,5 +183,21 @@ namespace EEWReplayer.Utils
         public DateTime EndTime { get; set; } = DateTime.MinValue;
         public TimeSpan DrawSpan { get; set; } = TimeSpan.Zero;
 
+        public class Size
+        {
+            public Size(int height)
+            {
+                Width = height * 16 / 9;
+                Height = height;
+            }
+            public Size(int width, int height)
+            {
+                Width = width;
+                Height = height;
+            }
+
+            public int Width { get; } = 0;
+            public int Height { get; } = 0;
+        }
     }
 }
