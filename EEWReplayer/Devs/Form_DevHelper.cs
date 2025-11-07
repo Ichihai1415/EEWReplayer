@@ -1,4 +1,6 @@
-﻿using EEWReplayer.Utils;
+﻿using AngleSharp.Io;
+using EEWReplayer.Utils;
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Xml.Serialization;
 using static EEWReplayer.Utils.Common;
 using static EEWReplayer.Utils.DataConverter;
@@ -18,11 +20,12 @@ namespace EEWReplayer.Devs
             JMAXML2OriginalJSON();
         }
 
-        private void JMAXML2OriginalJSON()
+        private static void JMAXML2OriginalJSON()
         {
 
             var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
-            var xmlSt = File.ReadAllText(@"D:\Ichihai1415\data\json\dmdss\VXSE45_RJTD_20251105010000_03043bf.xml");
+            //var xmlSt = File.ReadAllText(@"D:\Ichihai1415\data\json\dmdss\VXSE45_RJTD_20251105010000_03043bf.xml");
+            var xmlSt = File.ReadAllText(@"C:\Users\proje\Downloads\dmdss\VXSE45_RJTD_20251105010000_03043bf.xml");
             using var reader = new StringReader(xmlSt);
             var report = (C_Report?)serializer.Deserialize(reader) ?? throw new Exception("Feedの取得に失敗しました。");
             var (lat, lon, depth) = JMAXML_LatLonDepthConverter(report.Body_seismology1.Earthquake[0].Hypocenter.Area.Coordinate[0].Value);
@@ -40,7 +43,7 @@ namespace EEWReplayer.Devs
             var intensityAreas = new Dictionary<Intensity, List<(string areaName, int areaCode)>>();
             foreach (var area in report.Body_seismology1.Intensity.Forecast.Pref.Select(p => p.Area))
             {
-                var maxInt = Intensity_JMAString2Enum_FromTo2Max(area[0].ForecastInt.From, area[0].ForecastInt.To);
+                var maxInt = Intensity_JMAxmlString2Enum_FromTo2Max(area[0].ForecastInt.From, area[0].ForecastInt.To);
                 var areaName = area[0].Name;
                 var areaCode = int.TryParse(area[0].Code, out var c) ? c : 0;
                 if (!intensityAreas.ContainsKey(maxInt))
@@ -67,12 +70,9 @@ namespace EEWReplayer.Devs
                     HypoDepth = (double)depth!,
                     Magnitude = report.Body_seismology1.Earthquake[0].Magnitude[0].Value,
                     IsWarn = isWarn,
-                    MaxIntensity = Intensity_JMAString2Enum_FromTo2Max(report.Body_seismology1.Intensity.Forecast.ForecastInt.From, report.Body_seismology1.Intensity.Forecast.ForecastInt.To),
-                    MaxIntensityL = Intensity_JMAString2Enum_FromTo2Max(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
-                    IntensityAreas = new Data.EEWList.EEW.IntensityArea[]
-                    {
-
-                    }
+                    MaxIntensity = IntensityD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastInt.From, report.Body_seismology1.Intensity.Forecast.ForecastInt.To),
+                    MaxIntensityL = IntensityD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
+                    IntensityAreas = []
 
                 }], report.Head.EventID)]
             };
@@ -82,7 +82,7 @@ namespace EEWReplayer.Devs
             Console.WriteLine();
         }
 
-        private void JSONMarger()
+        private static void JSONMarger()
         {
         }
     }

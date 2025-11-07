@@ -18,7 +18,7 @@ namespace EEWReplayer.Utils
         {
             return [.. areas.Select(area =>
             {
-                if (ConvertSource.AreaForecastE_N2C.TryGetValue(area.Replace("支庁", "地方"), out var code))
+                if (ConvertSource.AreaForecastE_Name2Code.TryGetValue(area.Replace("支庁", "地方"), out var code))
                     return code;
                 else
                 {
@@ -27,6 +27,7 @@ namespace EEWReplayer.Utils
                 }
             }).Where(value => value != -1)];
         }
+
         public static int[] AreasSt2Ints(string areasSt, char separator, StringSplitOptions splitOptions = StringSplitOptions.None)
         {
             var areas = areasSt.Split(separator, splitOptions);
@@ -38,15 +39,16 @@ namespace EEWReplayer.Utils
             var areas = areasSt.Split(separator, splitOptions);
             return AreasSt2Ints(areas);
         }
+
         public static string[] AreasInt2Sts(int[] code)
         {
-            return code.Select(c =>
+            return [.. code.Select(c =>
             {
-                if (ConvertSource.AreaForecastE_C2N.TryGetValue(c, out var area))
+                if (ConvertSource.AreaForecastE_Code2Name.TryGetValue(c, out var area))
                     return area;
                 else
                     return "";
-            }).Where(value => value != "").ToArray();
+            }).Where(value => value != "")];
         }
         public static string AreasInt2Sts(int[] code, char separator) => string.Join(separator, AreasInt2Sts(code));
 
@@ -83,8 +85,11 @@ namespace EEWReplayer.Utils
             return (double.Parse(lld[1]), double.Parse(lld[2]), lld.Length == 4 ? double.Parse(lld[3]) / 1000 : null);
         }
 
+        //使用時注意:
+        //eewShindo = eewShindo.Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定","");
+        //この時点で（震度）以上か<level>に　「と推定」は初期のみ
 
-        public static Intensity ParseShindoString(string value) => value switch//"震度"等余計な文字なし　0にしたい場合明示的に"０"に
+        public static Intensity Intensity_JMAwebString2Enum_single(string value) => value switch//"震度"等余計な文字なし　0にしたい場合明示的に"０"に
         {
             "０" => Intensity.S0, //基本ない
             "―" => Intensity.S0, //以前のみ？おそらく震度0の「不明」 https://www.data.jma.go.jp/eew/data/nc/pub_hist/2009/08/20090825063712/content/content_out.html
@@ -108,10 +113,16 @@ namespace EEWReplayer.Utils
             "長周期地震動階級２" => Intensity.L2,
             "長周期地震動階級３" => Intensity.L3,
             "長周期地震動階級４" => Intensity.L4,
-            _ => Intensity.Unknown // 未定義や異常値は "不明" 扱い
+            _ => throw new ArgumentException("引数が正しくありません。")
         };
 
-        public static Intensity Shindo_JMAString2Enum(string jmaShindo) => jmaShindo switch
+        /// <summary>
+        /// 気象庁防災情報XML震度文字列をIntensityに変換します。
+        /// </summary>
+        /// <param name="intensity"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static Intensity Intensity_JMAxmlString2Enum(string intensity) => intensity switch
         {
             "0" => Intensity.S0,
             "1" => Intensity.S1,
@@ -128,11 +139,11 @@ namespace EEWReplayer.Utils
             _ => throw new ArgumentException("引数が正しくありません。")
         };
 
-        public static Intensity Intensity_JMAString2Enum_FromTo2Max(string from, string to) => to == "over" ? Intensity_JMAString2Enum(from) : Intensity_JMAString2Enum(to);
-        public static DetailedIntensity Intensity_JMAString2Enum_FromTo2Detailed(string from, string to) => new DetailedIntensity(Intensity_JMAString2Enum(from), Intensity_JMAString2Enum(to));
+        public static Intensity Intensity_JMAxmlString2Enum_FromTo2Max(string from, string to) => to == "over" ? Intensity_JMAxmlString2Enum(from) : Intensity_JMAxmlString2Enum(to);
 
 
-        public static Intensity IntensityL_JMAString2Enum(string jmaShindo) => jmaShindo switch
+
+        public static Intensity IntensityL_JMAxmlString2Enum_single(string intensity) => intensity switch
         {
             "0" => Intensity.L0,
             "1" => Intensity.L1,
@@ -144,66 +155,78 @@ namespace EEWReplayer.Utils
         };
 
 
-        public static string Intensity_Enum2String(Intensity intensity)
+        public static string Intensity_Enum2JMAwebString_single(Intensity intensity) => intensity switch
         {
-            return intensity switch
+            Intensity.S0 => "０",
+            Intensity.S1 => "１",
+            Intensity.S2 => "２",
+            Intensity.S3 => "３",
+            Intensity.S4 => "４",
+            Intensity.S5l => "５弱",
+            Intensity.S5u => "５強",
+            Intensity.S6l => "６弱",
+            Intensity.S6u => "６強",
+            Intensity.S7 => "７",
+            Intensity.None => "予測なし",
+            Intensity.Unknown => "不明",
+            Intensity.Level => "最大震度５弱程度以上と推定",
+            Intensity.L0 => "長周期地震動階級０",
+            Intensity.L1 => "長周期地震動階級１",
+            Intensity.L2 => "長周期地震動階級２",
+            Intensity.L3 => "長周期地震動階級３",
+            Intensity.L4 => "長周期地震動階級４",
+            _ => throw new ArgumentException("引数が正しくありません。")
+        };
+
+        /// <summary>
+        /// 気象庁全角震度文字列（緊急地震速報の履歴）をDetailedIntensityに変換します。
+        /// </summary>
+        /// <param name="intensity"></param>
+        /// <returns></returns>
+        public static DetailedIntensity IntensityD_JMAwebString2Enum(string intensity)
+        {
+            intensity = intensity.Replace(" ", "").Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定", "");
+            //この時点で（震度）以上か<level>に　「と推定」は初期のみ
+            if (intensity.Contains("以上"))
             {
-                Intensity.S0 => "０",
-                Intensity.S1 => "１",
-                Intensity.S2 => "２",
-                Intensity.S3 => "３",
-                Intensity.S4 => "４",
-                Intensity.S5l => "５弱",
-                Intensity.S5u => "５強",
-                Intensity.S6l => "６弱",
-                Intensity.S6u => "６強",
-                Intensity.S7 => "７",
-                Intensity.None => "予測なし",
-                Intensity.Unknown => "不明",
-                Intensity.Level => "最大震度５弱程度以上と推定",
-                Intensity.L0 => "長周期地震動階級０",
-                Intensity.L1 => "長周期地震動階級１",
-                Intensity.L2 => "長周期地震動階級２",
-                Intensity.L3 => "長周期地震動階級３",
-                Intensity.L4 => "長周期地震動階級４",
-                _ => throw new ArgumentException("引数が正しくありません。")
-            };
+                var iInt = Intensity_JMAwebString2Enum_single(intensity.Replace("以上", ""));
+                return new DetailedIntensity(iInt, Intensity.Over, iInt);
+            }
+            else if (intensity.Contains("から"))
+            {
+                var sInts = intensity.Split("から");
+                var fInt = Intensity_JMAwebString2Enum_single(sInts[0]);
+                var tInt = Intensity_JMAwebString2Enum_single(sInts[1]);
+                return new DetailedIntensity(fInt, tInt, tInt);
+            }
+            else
+            {
+                var iInt = Intensity_JMAwebString2Enum_single(intensity);
+                return new DetailedIntensity(iInt, iInt, iInt);
+            }
         }
+
+        /// <summary>
+        /// 気象庁防災情報XML震度文字列をDetailedIntensityに変換します。
+        /// </summary>
+        /// <remarks><see cref="DetailedIntensity.Max"/>に格納され，<see cref="DetailedIntensity.From"/>, <see cref="DetailedIntensity.To"/>は<see cref="Intensity.Null"/>となります。</remarks>
+        /// <param name="intensity"></param>
+        /// <returns></returns>
+        public static DetailedIntensity IntensityD_JMAxmlString2Enum(string intensity) => new(Intensity_JMAxmlString2Enum(intensity));
+
+        /// <summary>
+        /// 気象庁防災情報XML震度文字列(from,to)をDetailedIntensityに変換します。
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public static DetailedIntensity IntensityD_JMAxmlString2Enum(string from, string to) => new(Intensity_JMAxmlString2Enum(from), Intensity_JMAxmlString2Enum(to));
+
+
         public static class ConvertSource
         {
-            //使用時注意:
-            //eewShindo = eewShindo.Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定","");
-            //この時点で（震度）以上か<level>に　「と推定」は初期のみ
-
-
-            public static readonly Dictionary<string, Intensity> Intensity_StringEnum = new()//"震度"等余計な文字なし　0にしたい場合明示的に"０"に
-            {
-                { "０", Intensity.S0 },//基本ない
-                { "―", Intensity.S0 },//以前のみ？おそらく震度0の「不明」　https://www.data.jma.go.jp/eew/data/nc/pub_hist/2009/08/20090825063712/content/content_out.html
-                { "１", Intensity.S1 },
-                { "２", Intensity.S2 },
-                { "３", Intensity.S3 },
-                { "４", Intensity.S4 },
-                { "５弱", Intensity.S5l },
-                { "５強", Intensity.S5u },
-                { "６弱", Intensity.S6l },
-                { "６強", Intensity.S6u },
-                { "７", Intensity.S7 },
-                { "不明", Intensity.Unknown },
-                { "—", Intensity.Unknown },
-                { "---", Intensity.Unknown },
-                { "<level>", Intensity.Level },
-                { "予測なし", Intensity.None },
-                { "", Intensity.None },
-                { "長周期地震動階級１", Intensity.L1 },
-                { "長周期地震動階級２", Intensity.L2 },
-                { "長周期地震動階級３", Intensity.L3 },
-                { "長周期地震動階級４", Intensity.L4 },
-            };
-
-
-            #region AreaForecastE_C2N
-            public static readonly Dictionary<int, string> AreaForecastE_C2N = new()
+            #region AreaForecastE_Code2Name
+            public static readonly Dictionary<int, string> AreaForecastE_Code2Name = new()
             {
                 { 100, "石狩地方北部" },
                 { 101, "石狩地方中部" },
@@ -396,8 +419,8 @@ namespace EEWReplayer.Utils
             };
             #endregion
 
-            #region AreaForecastE_N2C
-            public static readonly Dictionary<string, int> AreaForecastE_N2C = new()
+            #region AreaForecastE_Nname2Code
+            public static readonly Dictionary<string, int> AreaForecastE_Name2Code = new()
             {
                 { "石狩地方北部", 100 },
                 { "石狩地方中部", 101 },
@@ -589,8 +612,6 @@ namespace EEWReplayer.Utils
                 { "沖縄県西表島", 807 }
             };
             #endregion
-
-
         }
 
     }

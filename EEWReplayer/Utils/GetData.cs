@@ -44,7 +44,7 @@ namespace EEWReplayer.Utils
                         HypoLon = LatLon60to10(hypoCells[3].TextContent),
                         HypoDepth = double.Parse(hypoCells[4].TextContent.Replace("km", "")),
                         Magnitude = hypoCells[5].TextContent == "---" || hypoCells[5].TextContent == "不明" ? double.NaN : double.Parse(hypoCells[5].TextContent),
-                        MaxIntensity = ConvertSource.Intensity_StringEnum[hypoCells[6].TextContent]
+                        MaxIntensity = Intensity_JMAwebString2Enum_single(hypoCells[6].TextContent)
                     };
                     if (double.IsNormal(info.Magnitude))
                         if (info.Magnitude > magTemp)
@@ -78,7 +78,7 @@ namespace EEWReplayer.Utils
                 if (intCells.Length == 3)
                 {
                     var serialSt = intCells[0].TextContent;
-                    var intensity = new DetailedIntensity(intCells[1].TextContent);
+                    var intensity = IntensityD_JMAwebString2Enum(intCells[1].TextContent);
                     var areas = intCells[2].TextContent;
                     serialLast = serialSt;
                     intLast = intensity;
@@ -87,28 +87,18 @@ namespace EEWReplayer.Utils
                     {
                         intAreas.Add(serialSt,
                         [
-                            new()
-                            {
-                                MaxIntensityD = intensity,
-                                AreaNames = areas.Split('，'),
-                                AreaCodes = AreasSt2Ints(areas, '、')
-                            }
+                            new Data.EEWList.EEW.IntensityArea(intensity,areas.Split('，'),AreasSt2Ints(areas, '、'))
                         ]);
                     }
                 }
                 else if (intCells.Length == 2)//番号同じ
                 {
-                    var intensity = new DetailedIntensity(intCells[0].TextContent);
+                    var intensity = IntensityD_JMAwebString2Enum(intCells[0].TextContent);
                     var areas = intCells[1].TextContent;
                     intLast = intensity;
 
                     if (!intAreas[serialLast].Any(existInt => existInt.MaxIntensityD == intensity))//新版はすべて取ると重複の可能性あるため
-                        intAreas[serialLast].Add(new()
-                        {
-                            MaxIntensityD = intensity,
-                            AreaNames = areas.Split('，'),
-                            AreaCodes = AreasSt2Ints(areas, '、')
-                        });
+                        intAreas[serialLast].Add(new(intensity, areas.Split('，'), AreasSt2Ints(areas, '、')));
                 }
                 else if (intCells.Length == 2)//震度同じ
                 {
@@ -148,15 +138,7 @@ namespace EEWReplayer.Utils
                     }
 
                     var intRef = eewCells[7].TextContent;
-                    var intArea = intRef.StartsWith('※') ? intAreas[intRef] :
-                    [
-                        new()
-                        {
-                            MaxIntensityD = new DetailedIntensity(intRef),
-                            AreaNames = ["(エリアなし)"],
-                            AreaCodes = []
-                        }
-                    ];
+                    var intArea = intRef.StartsWith('※') ? intAreas[intRef] : [new(IntensityD_JMAwebString2Enum(intRef))];
                     var info = new Data.EEWList.EEW
                     {
                         Serial = int.Parse(eewCells[0].TextContent),
@@ -168,7 +150,7 @@ namespace EEWReplayer.Utils
                         HypoDepth = double.Parse(eewCells[5].TextContent.Replace("km", "")),
                         Magnitude = eewCells[6].TextContent == "---" || eewCells[6].TextContent == "不明" ? double.NaN : double.Parse(eewCells[6].TextContent),
                         IsWarn = eewRow.ClassList.Contains("eew_public_warning_row"),
-                        MaxIntensity = intArea.First().MaxIntensityD.Max,
+                        MaxIntensity = intArea.First().MaxIntensityD,
                         IntensityAreas = [.. intArea]
                     };
                     eew.Add(info);

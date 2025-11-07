@@ -22,7 +22,7 @@ namespace EEWReplayer
         {
             InitializeComponent();
         }
-        public static Form2_progress f = new();
+        internal static readonly Form2_progress f = new();
 
         private void Form1_Load(object sender, EventArgs e)
         {

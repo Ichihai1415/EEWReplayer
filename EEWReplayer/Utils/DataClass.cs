@@ -137,19 +137,27 @@ namespace EEWReplayer.Utils
                 public DetailedIntensity MaxIntensity { get; set; } = new DetailedIntensity();
                 public DetailedIntensity MaxIntensityL { get; set; } = new DetailedIntensity();
 
-                public (string[]? warnAreas, int[]? warnCodes) GetWarningAreas()
+                public (string[] warnAreas, int[] warnCodes) GetWarningAreas()
                 {
                     var warnAreas = IntensityAreas.Where(x => (Intensity.S7 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.S4) || (Intensity.L4 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.L3));
                     var areaNames = warnAreas.SelectMany(x => x.AreaNames).Distinct().ToArray();
                     var areaCodes = warnAreas.SelectMany(x => x.AreaCodes).Distinct().ToArray();
                     if (areaNames.Length != areaCodes.Length)
                         throw new Exception($"area-code is not fully converted({areaNames.Length}-{areaCodes.Length})");
-                    return (areaNames.Length > 0 ? areaNames : null, areaCodes.Length > 0 ? areaCodes : null);
+                    //return (areaNames.Length > 0 ? areaNames : null, areaCodes.Length > 0 ? areaCodes : null);
+                    return (areaNames, areaCodes);
                 }
 
                 public IntensityArea[] IntensityAreas { get; set; } = [];
                 public class IntensityArea
                 {
+                    public IntensityArea(DetailedIntensity intensity, string[]? areaNames = null, int[]? areaCodes = null)
+                    {
+                        MaxIntensityD = intensity.DeepClone();
+                        AreaNames = areaNames ?? [];
+                        AreaCodes = areaCodes ?? [];
+                    }
+
                     public IntensityArea(KeyValuePair<DetailedIntensity, List<(string areaName, int areaCode)>> kv)
                     {
                         MaxIntensityD = kv.Key.DeepClone();
