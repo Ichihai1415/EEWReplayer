@@ -18,12 +18,12 @@ namespace EEWReplayer.Utils
             var document = await parser.ParseDocumentAsync(response);
 
             Console.WriteLine("処理中[1/3]...");
-            var eqInfo_ = new List<Data.Earthquake>();
+            var eqInfos = new List<Data.Earthquake>();
             var hypoTable = document.QuerySelectorAll("table[id='hypocentral_element_list']");
             var hypoRows = hypoTable[0].QuerySelectorAll("tr").Skip(1);
             var mainOriginTime = DateTime.MinValue;
             var mainHypoName = "";
-            var magTemp = -1d;
+            var mainMag = -1d;
             foreach (var hypoRow in hypoRows)
             {
                 var hypoCells = hypoRow.QuerySelectorAll("td");
@@ -38,24 +38,31 @@ namespace EEWReplayer.Utils
                     var originTime = DateTime.Parse(year + "/" + originTimeSts[1]);
                     var info = new Data.Earthquake
                     {
+                        Source = "JMA-EEW-HIST",
                         OriginTime = originTime,
                         HypoName = hypoCells[1].TextContent.Replace("(", "").Replace(")", ""),
                         HypoLat = LatLon60to10(hypoCells[2].TextContent),
                         HypoLon = LatLon60to10(hypoCells[3].TextContent),
-                        HypoDepth = double.Parse(hypoCells[4].TextContent.Replace("km", "")),
-                        Magnitude = hypoCells[5].TextContent == "---" || hypoCells[5].TextContent == "不明" ? double.NaN : double.Parse(hypoCells[5].TextContent),
+                        HypoDepth = double.TryParse(hypoCells[4].TextContent.Replace("km", ""), out double depth) ? depth : double.NaN,
+                        Magnitude = double.TryParse(hypoCells[5].TextContent, out double mag) ? mag : double.NaN,
                         MaxIntensity = Intensity_JMAwebString2Enum_single(hypoCells[6].TextContent)
                     };
-                    if (double.IsNormal(info.Magnitude))
-                        if (info.Magnitude > magTemp)
+                    if (double.IsNormal(info.Magnitude))//メインイベント抽出
+                        if (info.Magnitude > mainMag)
                         {
                             mainOriginTime = info.OriginTime;
                             mainHypoName = info.HypoName;
-                            magTemp = info.Magnitude;
+                            mainMag = info.Magnitude;
                         }
-                    eqInfo_.Add(info);
+                    eqInfos.Add(info);
                 }
             }
+            foreach (var eq in eqInfos)//メインイベントにID割り当て
+                if (mainOriginTime == eq.OriginTime && mainHypoName == eq.HypoName && mainMag == eq.Magnitude)
+                {
+                    eq.ID = url.Split('/')[9];
+                    break;
+                }
 
             Console.WriteLine("処理中[2/3]...");
             var intAreas = new Dictionary<string, List<Data.EEWList.EEW.IntensityArea>>();
@@ -133,7 +140,7 @@ namespace EEWReplayer.Utils
                 {
                     if (detectTime == DateTime.MinValue)
                     {
-                        detectTime = DateTime.Parse(eqInfo_[0].OriginTime.ToString("yyyy/MM/dd ") + eewCells[1].TextContent.Replace("時", ":").Replace("分", ":").Replace("秒", ""));
+                        detectTime = DateTime.Parse(eqInfos[0].OriginTime.ToString("yyyy/MM/dd ") + eewCells[1].TextContent.Replace("時", ":").Replace("分", ":").Replace("秒", ""));
                         continue;
                     }
 
@@ -151,7 +158,7 @@ namespace EEWReplayer.Utils
                         Magnitude = eewCells[6].TextContent == "---" || eewCells[6].TextContent == "不明" ? double.NaN : double.Parse(eewCells[6].TextContent),
                         IsWarn = eewRow.ClassList.Contains("eew_public_warning_row"),
                         MaxIntensityD = intArea.First().MaxIntensityD,
-                        IntensityAreas = [.. intArea]
+                        IntensityAreas = intArea.First().MaxIntensityD.From < 0 ? [] : [.. intArea]
                     };
                     eew.Add(info);
                 }
@@ -162,8 +169,8 @@ namespace EEWReplayer.Utils
                 Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成,通常は暫定値ですが、新しく未更新の場合は速報値となります,各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます,詳細: " + url,
                 Created = DateTime.Now,
                 Version = Form1.VERSION,
-                Earthquakes = [.. eqInfo_],
-                EEWLists = [new Data.EEWList([.. eew], "JMA-WEB")]
+                Earthquakes = [.. eqInfos],
+                EEWLists = [new Data.EEWList([.. eew], "JMA-EEW-HIST", url.Split('/')[9])]
             };
         }
     }

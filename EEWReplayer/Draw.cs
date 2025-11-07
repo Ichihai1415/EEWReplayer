@@ -46,6 +46,7 @@ namespace EEWReplayer
                         drawEEWList.Add(new Data.EEWList()
                         {
                             ID = eewList.ID,
+                            Source = eewList.Source,
                             EEWs = [drawEEW]
                         });
                 }

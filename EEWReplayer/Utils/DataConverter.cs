@@ -106,7 +106,7 @@ namespace EEWReplayer.Utils
             "—" => Intensity.Unknown,
             "---" => Intensity.Unknown,
             "<level>" => Intensity.Level,
-            "予測なし" => Intensity.None,
+            "予測なし" => Intensity.None,//「予測震度なし」
             "" => Intensity.None,
             "長周期地震動階級０" => Intensity.L0,
             "長周期地震動階級１" => Intensity.L1,
@@ -139,7 +139,7 @@ namespace EEWReplayer.Utils
             _ => throw new ArgumentException("引数が正しくありません。")
         };
 
-        public static Intensity Intensity_JMAxmlString2Enum_FromTo2Max(string from, string to) => to == "over" ? Intensity_JMAxmlString2Enum(from) : Intensity_JMAxmlString2Enum(to);
+        public static Intensity Intensity_JMAxmlString2Enum(string from, string to) => to == "over" ? Intensity_JMAxmlString2Enum(from) : Intensity_JMAxmlString2Enum(to);
 
 
 
@@ -185,7 +185,8 @@ namespace EEWReplayer.Utils
         /// <returns></returns>
         public static DetailedIntensity IntensityD_JMAwebString2Enum(string intensity)
         {
-            intensity = intensity.Replace(" ", "").Replace("最大震度５弱程度以上と推定", "<level>").Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定", "");
+            intensity = intensity.Replace(" ", "").Replace("最大震度５弱程度以上と推定", "<level>")
+                .Replace("最大", "").Replace("震度", "").Replace("程度", "").Replace("と推定", "");
             //この時点で（震度）以上か<level>に　「と推定」は初期のみ
             if (intensity.Contains("以上"))
             {
