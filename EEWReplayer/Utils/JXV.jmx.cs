@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 #pragma warning disable CS8981 // 型名には、小文字の ASCII 文字のみが含まれています。このような名前は、プログラミング言語用に予約されている可能性があります。
 namespace JmaXmlViewer.Utilities
 {
-    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加 修正箇所は→のように //変更: 
+    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加  doubleをdoubleに    修正箇所は→のように //変更: 
     {
 
         /// <remarks/>
@@ -5233,7 +5233,7 @@ namespace JmaXmlViewer.Utilities
 
             private bool significantFieldSpecified;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5293,7 +5293,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -5323,7 +5323,7 @@ namespace JmaXmlViewer.Utilities
 
             private string boundField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5383,7 +5383,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -5621,7 +5621,7 @@ namespace JmaXmlViewer.Utilities
 
             private string conditionField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5695,7 +5695,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -5933,7 +5933,7 @@ namespace JmaXmlViewer.Utilities
 
             private string descriptionField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -5979,7 +5979,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -6010,7 +6010,7 @@ namespace JmaXmlViewer.Utilities
 
             private string descriptionField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -6070,7 +6070,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -6097,7 +6097,7 @@ namespace JmaXmlViewer.Utilities
 
             private string unitField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -6129,7 +6129,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -6463,7 +6463,7 @@ namespace JmaXmlViewer.Utilities
 
             private string unitField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -6509,7 +6509,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -22474,7 +22474,7 @@ namespace JmaXmlViewer.Utilities
 
             private string reviseField;
 
-            private float periodField;
+            private double periodField;
 
             private bool periodFieldSpecified;
 
@@ -22613,7 +22613,7 @@ namespace JmaXmlViewer.Utilities
             }
 
             /// <remarks/>
-            public float Period
+            public double Period
             {
                 get
                 {
@@ -22663,7 +22663,7 @@ namespace JmaXmlViewer.Utilities
 
             private string reviseField;
 
-            private float periodField;
+            private double periodField;
 
             private bool periodFieldSpecified;
 
@@ -22761,7 +22761,7 @@ namespace JmaXmlViewer.Utilities
             }
 
             /// <remarks/>
-            public float Period
+            public double Period
             {
                 get
                 {
@@ -23693,7 +23693,7 @@ namespace JmaXmlViewer.Utilities
 
             private int rank2Field;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -23725,7 +23725,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -23749,7 +23749,7 @@ namespace JmaXmlViewer.Utilities
 
             private int rankField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -23767,7 +23767,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -23791,7 +23791,7 @@ namespace JmaXmlViewer.Utilities
 
             private int rankField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -23809,7 +23809,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -24815,7 +24815,7 @@ namespace JmaXmlViewer.Utilities
 
             private string intField;
 
-            private float kField;
+            private double kField;
 
             private bool kFieldSpecified;
 
@@ -24869,7 +24869,7 @@ namespace JmaXmlViewer.Utilities
             }
 
             /// <remarks/>
-            public float K
+            public double K
             {
                 get
                 {
@@ -24976,7 +24976,7 @@ namespace JmaXmlViewer.Utilities
 
             private bool periodicBandFieldSpecified;
 
-            private float periodField;
+            private double periodField;
 
             private bool periodFieldSpecified;
 
@@ -25014,7 +25014,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
-            public float Period
+            public double Period
             {
                 get
                 {
@@ -25080,7 +25080,7 @@ namespace JmaXmlViewer.Utilities
 
             private string unitField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -25098,7 +25098,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {
@@ -25126,13 +25126,13 @@ namespace JmaXmlViewer.Utilities
 
             private bool periodicBandFieldSpecified;
 
-            private float periodField;
+            private double periodField;
 
             private bool periodFieldSpecified;
 
             private string periodUnitField;
 
-            private float valueField;
+            private double valueField;
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -25178,7 +25178,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlAttributeAttribute()]
-            public float Period
+            public double Period
             {
                 get
                 {
@@ -25220,7 +25220,7 @@ namespace JmaXmlViewer.Utilities
 
             /// <remarks/>
             [System.Xml.Serialization.XmlTextAttribute()]
-            public float Value
+            public double Value
             {
                 get
                 {

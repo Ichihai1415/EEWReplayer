@@ -77,7 +77,7 @@ namespace EEWReplayer.Utils
                     if (To == Intensity.Level)
                         return "最大震度５弱程度以上と推定";
                     else if ((int)From > 9)
-                        return Intensity_Enum2JMAwebString_single(From);
+                        return "長周期地震動階級" + Intensity_Enum2JMAwebString_single(From);
                     else if (To == Intensity.Over)
                         return "震度" + Intensity_Enum2JMAwebString_single(From) + "以上";
                     else if (From != To)

@@ -143,7 +143,7 @@ namespace EEWReplayer.Utils
 
 
 
-        public static Intensity IntensityL_JMAxmlString2Enum_single(string intensity) => intensity switch
+        public static Intensity IntensityLg_JMAxmlString2Enum(string intensity) => intensity switch
         {
             "0" => Intensity.L0,
             "1" => Intensity.L1,
@@ -170,11 +170,11 @@ namespace EEWReplayer.Utils
             Intensity.None => "予測なし",
             Intensity.Unknown => "不明",
             Intensity.Level => "最大震度５弱程度以上と推定",
-            Intensity.L0 => "長周期地震動階級０",
-            Intensity.L1 => "長周期地震動階級１",
-            Intensity.L2 => "長周期地震動階級２",
-            Intensity.L3 => "長周期地震動階級３",
-            Intensity.L4 => "長周期地震動階級４",
+            Intensity.L0 => "０",
+            Intensity.L1 => "１",
+            Intensity.L2 => "２",
+            Intensity.L3 => "３",
+            Intensity.L4 => "４",
             _ => throw new ArgumentException("引数が正しくありません。")
         };
 
@@ -221,6 +221,8 @@ namespace EEWReplayer.Utils
         /// <param name="to"></param>
         /// <returns></returns>
         public static DetailedIntensity IntensityD_JMAxmlString2Enum(string from, string to) => new(Intensity_JMAxmlString2Enum(from), Intensity_JMAxmlString2Enum(to));
+
+        public static DetailedIntensity IntensityLgD_JMAxmlString2Enum(string from, string to) => new(IntensityLg_JMAxmlString2Enum(from), IntensityLg_JMAxmlString2Enum(to));
 
 
         public static class ConvertSource
