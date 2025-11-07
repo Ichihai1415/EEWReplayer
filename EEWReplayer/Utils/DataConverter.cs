@@ -225,6 +225,21 @@ namespace EEWReplayer.Utils
         public static DetailedIntensity IntensityLgD_JMAxmlString2Enum(string from, string to) => new(IntensityLg_JMAxmlString2Enum(from), IntensityLg_JMAxmlString2Enum(to));
 
 
+
+        public static Data.EEWList.EEW.IntensityArea[] SortIntensityAreas(Dictionary<DetailedIntensity, List<(string areaName, int areaCode)>> intensityAreas_dict) =>
+            [.. intensityAreas_dict.Where(x => !x.Key.IsNull).OrderByDescending(x => IntensityTransform(x.Key.From)).OrderByDescending(x => IntensityTransform(x.Key.Max)).Select(kv => new Data.EEWList.EEW.IntensityArea(kv))];
+
+        /// <summary>
+        /// ソートで通常震度が優先されるよう変換します。
+        /// </summary>
+        /// <param name="intensityNum"></param>
+        /// <returns></returns>
+        private static int IntensityTransform(int intensityNum) => (10 > intensityNum && intensityNum >= 0) ? intensityNum + 20 : intensityNum;
+
+
+        private static int IntensityTransform(Intensity intensity) => IntensityTransform((int)intensity);
+
+
         public static class ConvertSource
         {
             #region AreaForecastE_Code2Name

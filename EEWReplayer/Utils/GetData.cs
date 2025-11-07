@@ -150,7 +150,7 @@ namespace EEWReplayer.Utils
                         HypoDepth = double.Parse(eewCells[5].TextContent.Replace("km", "")),
                         Magnitude = eewCells[6].TextContent == "---" || eewCells[6].TextContent == "不明" ? double.NaN : double.Parse(eewCells[6].TextContent),
                         IsWarn = eewRow.ClassList.Contains("eew_public_warning_row"),
-                        MaxIntensity = intArea.First().MaxIntensityD,
+                        MaxIntensityD = intArea.First().MaxIntensityD,
                         IntensityAreas = [.. intArea]
                     };
                     eew.Add(info);

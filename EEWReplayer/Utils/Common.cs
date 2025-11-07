@@ -1,4 +1,5 @@
-﻿using static EEWReplayer.Utils.DataConverter;
+﻿using System.Text.Json.Serialization;
+using static EEWReplayer.Utils.DataConverter;
 
 namespace EEWReplayer.Utils
 {
@@ -34,6 +35,9 @@ namespace EEWReplayer.Utils
             public Intensity To { get; set; } = Intensity.Null;
             public Intensity Max { get; set; } = Intensity.Null;
 
+            [JsonIgnore]
+            public readonly bool IsNull => From == Intensity.Null;
+
             public DetailedIntensity()
             {
                 From = Intensity.Null;
@@ -43,8 +47,8 @@ namespace EEWReplayer.Utils
 
             public DetailedIntensity(Intensity intensity)
             {
-                From = Intensity.Null;
-                To = Intensity.Null;
+                From = intensity;
+                To = intensity;
                 Max = intensity;
             }
 

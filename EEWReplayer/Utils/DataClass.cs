@@ -63,6 +63,7 @@ namespace EEWReplayer.Utils
 
             public Earthquake(Earthquake src)
             {
+                ID = src.ID;
                 OriginTime = src.OriginTime;
                 HypoName = src.HypoName;
                 HypoLat = src.HypoLat;
@@ -72,6 +73,8 @@ namespace EEWReplayer.Utils
                 MaxIntensity = src.MaxIntensity;
             }
             public Earthquake DeepCopy() => new(this);
+
+            public string ID { get; set; } = "";
 
             public DateTime OriginTime { get; set; } = DateTime.MinValue;
             public string HypoName { get; set; } = "";
@@ -118,8 +121,8 @@ namespace EEWReplayer.Utils
                     HypoDepth = src.HypoDepth;
                     Magnitude = src.Magnitude;
                     IsWarn = src.IsWarn;
-                    MaxIntensity = src.MaxIntensity;
-                    MaxIntensityL = src.MaxIntensityL;
+                    MaxIntensityD = src.MaxIntensityD;
+                    MaxIntensityLgD = src.MaxIntensityLgD;
                     IntensityAreas = [.. src.IntensityAreas.Select(srcArea => srcArea.DeepCopy())];
                 }
 
@@ -134,8 +137,8 @@ namespace EEWReplayer.Utils
                 public double HypoDepth { get; set; } = double.NaN;
                 public double Magnitude { get; set; } = double.NaN;
                 public bool IsWarn { get; set; } = false;
-                public DetailedIntensity MaxIntensity { get; set; } = new DetailedIntensity();
-                public DetailedIntensity MaxIntensityL { get; set; } = new DetailedIntensity();
+                public DetailedIntensity MaxIntensityD { get; set; } = new DetailedIntensity();
+                public DetailedIntensity MaxIntensityLgD { get; set; } = new DetailedIntensity();
 
                 public (string[] warnAreas, int[] warnCodes) GetWarningAreas()
                 {
