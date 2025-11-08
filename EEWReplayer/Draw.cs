@@ -1,7 +1,9 @@
 ﻿using EEWReplayer.Properties;
 using EEWReplayer.Utils;
 using Ichihai1415.GeoJSON;
+using PSWaveDistance;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Text.Json;
 using static EEWReplayer.Utils.Common;
 
@@ -80,15 +82,19 @@ namespace EEWReplayer
 
         public static async Task DrawFlowEx()
         {
+            var dir = "output\\" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            Directory.CreateDirectory(dir);
+
             var d = JsonSerializer.Deserialize<Data>(Resources.jma_xml_20251105095956, Form1.options);
             var config = new DrawConfig()
             {
                 StartTime = new DateTime(2025, 11, 05, 09, 59, 58),
-                EndTime = new DateTime(2025, 11, 05, 10, 03, 00),
-                DrawSpan = new TimeSpan(0, 0, 0, 1, 000),
+                EndTime = new DateTime(2025, 11, 05, 10, 02, 00),
+                DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
                 Size = new(1080)
             };
             var dClone = d!.DeepCopy();
+            var c = 1;
             for (var drawTime = config.StartTime; drawTime < config.EndTime; drawTime = drawTime.AddMilliseconds(config.DrawSpan.TotalMilliseconds))//ms単位で正確に足し算
             {
                 //var overwriteEEWList = new Data.EEWList();
@@ -149,7 +155,7 @@ namespace EEWReplayer
                 var colorConfig = new Dictionary<int, Intensity>();
                 foreach (var drawEEW in drawEEWList)
                 {
-                    foreach (var area in drawEEW.EEWs[0].IntensityAreas)
+                    foreach (var area in drawEEW.EEWs[0].IntensityAreas)//Lgでも
                     {
                         foreach (var code in area.AreaCodes)
                         {
@@ -167,14 +173,26 @@ namespace EEWReplayer
                 }
 
                 DrawMap(g, colorConfig.ToDictionary(kv => kv.Key, kv => IntN2Brush(kv.Value)));
-
-                Form1.fd.BackgroundImage = img;
-                await Task.Delay((int)config.DrawSpan.TotalMilliseconds);
+                DrawPSWave(g, [.. drawEEWList], drawTime);
+                g.DrawString("地図データ:気象庁\n" + drawTime.ToString("yyyy/MM/dd HH:mm:ss.ff"), new Font("koruri", 20), Brushes.White, 0, 0);
+                var rightText = "";
+                foreach (var drawEEW in drawEEWList)
+                {
+                    var eew = drawEEW.EEWs[0];
+                    rightText += $"{drawEEW.ID} {eew.OriginTime:yyyy/MM/dd HH:mm:ss.f} {eew.HypoName} M{eew.Magnitude} {eew.MaxIntensityD}\n";
+                }
+                g.DrawString(rightText, new Font("koruri", 16), Brushes.White, 1080, 0);
+                img.Save($"{dir}\\{c:d5}.png", ImageFormat.Png);
+                Console.WriteLine($"Saved: {dir}\\{c:d5}.png");
+                Form1.fd.ChangeImage(img);
+                //await Task.Delay((int)config.DrawSpan.TotalMilliseconds);
+                c++;
             }
 
             Console.WriteLine($"END----------");
-
-
+            var f = 10;
+            Console.WriteLine($" ffmpeg -framerate {f} -i \"%05d.png\" -vcodec libx264 -pix_fmt yuv420p -r {f} \"_output_{f}.mp4\"");
+            Console.WriteLine($"END----------");
 
 
 
@@ -238,6 +256,44 @@ namespace EEWReplayer
             g.FillRectangle(Brushes.Black, 1080, 0, 1920 - 1080, 1080);
         }
 
+        private static readonly PSDistances psd = new();
+
+        public static void DrawPSWave(Graphics g, Data.EEWList[] eewLists, DateTime drawTime, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
+        {
+            foreach (var eewList in eewLists)
+            {
+                DrawPSWave(g, eewList.EEWs[0], drawTime, latSta, latEnd, lonSta, lonEnd);
+            }
+        }
+
+        public static void DrawPSWave(Graphics g, Data.EEWList.EEW eew, DateTime drawTime, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
+        {
+            var zoom = 1080f / (latEnd - latSta);
+
+            var seconds = (drawTime - eew.OriginTime).TotalSeconds;
+
+            if (seconds > 0)
+            {
+                var (pLatLon, sLatLon) = psd!.GetLatLonList(eew.HypoDepth, seconds, eew.HypoLat, eew.HypoLon, 45);
+                if (pLatLon.Count > 2)//基本45、失敗時0か1
+                {
+                    var pPts = pLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
+                    pPts.Add(pPts[0]);
+                    g.DrawPolygon(new Pen(Color.FromArgb(64, 64, 255), 2), pPts.ToArray());
+                }
+                if (sLatLon.Count > 2)
+                {
+                    var sPts = sLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
+                    sPts.Add(sPts[0]);
+                    g.DrawPolygon(new Pen(Color.Red, 2), sPts.ToArray());
+                    g.FillPolygon(new SolidBrush(Color.FromArgb(64, 255, 0, 0)), sPts.ToArray());
+                }
+                var hypoLength = 20;
+                var hypoPt = new PointF(((float)eew.HypoLon - lonSta) * zoom, (latEnd - (float)eew.HypoLat) * zoom);
+                g.DrawLine(new Pen(Color.Red, 6), hypoPt.X - hypoLength, hypoPt.Y - hypoLength, hypoPt.X + hypoLength, hypoPt.Y + hypoLength);
+                g.DrawLine(new Pen(Color.Red, 6), hypoPt.X + hypoLength, hypoPt.Y - hypoLength, hypoPt.X - hypoLength, hypoPt.Y + hypoLength);
+            }
+        }
 
         /// <summary>
         /// 画像描画用に緯度・経度を補正します

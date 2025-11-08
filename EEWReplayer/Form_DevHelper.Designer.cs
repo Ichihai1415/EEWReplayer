@@ -28,7 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Img = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)Img).BeginInit();
             SuspendLayout();
+            // 
+            // Img
+            // 
+            Img.Dock = DockStyle.Fill;
+            Img.Location = new Point(0, 0);
+            Img.Name = "Img";
+            Img.Size = new Size(800, 450);
+            Img.SizeMode = PictureBoxSizeMode.Zoom;
+            Img.TabIndex = 0;
+            Img.TabStop = false;
             // 
             // Form_DevHelper
             // 
@@ -36,13 +48,17 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(800, 450);
-            Margin = new Padding(2, 2, 2, 2);
+            Controls.Add(Img);
+            Margin = new Padding(2);
             Name = "Form_DevHelper";
             Text = "Form_DevHelper";
             Load += Form_DevHelper_Load;
+            ((System.ComponentModel.ISupportInitialize)Img).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private PictureBox Img;
     }
 }

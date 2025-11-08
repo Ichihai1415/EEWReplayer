@@ -25,6 +25,11 @@ namespace EEWReplayer.Devs
             await Draw.DrawFlowEx();
         }
 
+        internal void ChangeImage(Image img)
+        {
+            Img.Image = img;
+        }
+
         private static async void GetAllEEW()
         {
             //Directory.CreateDirectory("Test");
