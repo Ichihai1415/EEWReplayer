@@ -1,12 +1,10 @@
-﻿using AngleSharp.Browser;
-using AngleSharp.Html.Parser;
+﻿using AngleSharp.Html.Parser;
 using EEWReplayer.Utils;
 using System.Text.Json;
 using System.Xml.Serialization;
 using static EEWReplayer.Utils.Common;
 using static EEWReplayer.Utils.DataConverter;
 using static JmaXmlViewer.Utilities.XmlClass_XSD;
-using static System.Windows.Forms.Design.AxImporter;
 
 namespace EEWReplayer.Devs
 {
@@ -23,7 +21,7 @@ namespace EEWReplayer.Devs
             JMAXML2OriginalJSON();
         }
 
-        private async static void GetAllEEW()
+        private static async void GetAllEEW()
         {
             Directory.CreateDirectory("Test");
 
@@ -35,9 +33,10 @@ namespace EEWReplayer.Devs
             //File.WriteAllText("Test\\d_s0.json", JsonSerializer.Serialize(d_s0, options));
 
 
-            var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/10/20251019222354/index.html");
-            File.WriteAllText("Test\\d.json", JsonSerializer.Serialize(d, Form1.options));
-            return;
+            //var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/10/20251019222354/index.html");
+            //File.WriteAllText("Test\\d.json", JsonSerializer.Serialize(d, Form1.options));
+            //return;
+
             var client = new HttpClient();
             var parser = new HtmlParser();
 

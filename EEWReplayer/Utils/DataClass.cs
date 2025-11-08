@@ -383,7 +383,7 @@ namespace EEWReplayer.Utils
                 /// <summary>
                 /// 警報対象（相当）地域を取得します。
                 /// </summary>
-                /// <remarks>この情報での警報対象のみで、<see cref="IsWarn"/>が<see cref="false"/>の場合実際の対象地域と異なる場合があります。</remarks>
+                /// <remarks>この情報での警報対象のみで、<see cref="IsWarn"/>が<see cref="false"/>の場合実際の対象地域と異なる場合があります。また、警報2報以降の場合警報発表されたものの予測が基準以下になった場合入りません。<see cref="EEWList.GetWarningAreas()"/>で正確な地域を取得できます。</remarks>
                 /// <returns>推定震度4以上または推定長周期地震動階級3以上の地域</returns>
                 public (string[] warnAreas, int[] warnCodes) GetWarningAreas()
                 {
@@ -401,7 +401,6 @@ namespace EEWReplayer.Utils
                 /// </summary>
                 /// <returns>コピーされたインスタンス</returns>
                 public EEW DeepCopy() => new(this);
-
             }
 
             /// <summary>
@@ -410,6 +409,51 @@ namespace EEWReplayer.Utils
             /// <returns>コピーされたインスタンス</returns>
             public EEWList DeepCopy() => new(this);
 
+            /// <summary>
+            /// 警報発表毎の対象地域を取得します。
+            /// </summary>
+            /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
+            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas() => GetWarningAreas(int.MaxValue);
+
+            /// <summary>
+            /// 警報発表毎の対象地域を取得します。
+            /// </summary>
+            /// <param name="onlyNewArea">追加地域のみにするか</param>
+            /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
+            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(bool onlyNewArea) => GetWarningAreas(int.MaxValue, onlyNewArea);
+
+            /// <summary>
+            /// 警報発表毎の対象地域を取得します。
+            /// </summary>
+            /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
+            /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
+            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(int endSerial) => GetWarningAreas(endSerial, false);
+
+            /// <summary>
+            /// 警報発表毎の対象地域を取得します。
+            /// </summary>
+            /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
+            /// <param name="onlyNewArea">追加地域のみにするか</param>
+            /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
+            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(int endSerial, bool onlyNewArea)
+            {
+                var eew_warn = EEWs.Where(eew => eew.Serial <= endSerial).Where(eew => eew.IsWarn);
+                var result = new List<(string[] areaNames, int[] areaCodes)>();
+                var i = 0;
+                foreach (var eew in eew_warn)
+                {
+                    var (areaNames, areaCodes) = eew.GetWarningAreas();
+                    if (i == 0)
+                        result.Add((areaNames, areaCodes));
+                    else if (onlyNewArea)
+                        result.Add((areaNames.Except(result[i - 1].areaNames).ToArray(), areaCodes.Except(result[i - 1].areaCodes).ToArray()));
+                    else
+                        result.Add((result[i - 1].areaNames.Concat(areaNames).Distinct().ToArray(), result[i - 1].areaCodes.Concat(areaCodes).Distinct().ToArray()));
+                    i++;
+                }
+                return [.. result];
+            }
+
         }
 
         /// <summary>
@@ -417,7 +461,6 @@ namespace EEWReplayer.Utils
         /// </summary>
         /// <returns>コピーされたインスタンス</returns>
         public Data DeepCopy() => new(this);
-
     }
 
     public class DrawConfig

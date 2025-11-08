@@ -94,7 +94,7 @@ namespace EEWReplayer.Utils
                     {
                         intAreas.Add(serialSt,
                         [
-                            new Data.EEWList.EEW.IntensityArea(intensity,areas.Split('，'),AreasSt2Ints(areas, '、'))
+                            new Data.EEWList.EEW.IntensityArea(intensity, areas.Split('、'), AreasSt2Ints(areas, '、'))
                         ]);
                     }
                 }
@@ -105,7 +105,7 @@ namespace EEWReplayer.Utils
                     intLast = intensity;
 
                     if (!intAreas[serialLast].Any(existInt => existInt.MaxIntensityD == intensity))//新版はすべて取ると重複の可能性あるため
-                        intAreas[serialLast].Add(new(intensity, areas.Split('，'), AreasSt2Ints(areas, '、')));
+                        intAreas[serialLast].Add(new(intensity, areas.Split('、'), AreasSt2Ints(areas, '、')));
                 }
                 else if (intCells.Length == 2)//震度同じ
                 {
@@ -158,15 +158,15 @@ namespace EEWReplayer.Utils
                         Magnitude = eewCells[6].TextContent == "---" || eewCells[6].TextContent == "不明" ? double.NaN : double.Parse(eewCells[6].TextContent),
                         IsWarn = eewRow.ClassList.Contains("eew_public_warning_row"),
                         MaxIntensityD = intArea.First().MaxIntensityD,
-                        IntensityAreas = intArea.First().MaxIntensityD.From < 0 ? [] : [.. intArea]
+                        IntensityAreas = [.. intArea.Where(x => x.AreaNames.Length != 0)]
                     };
                     eew.Add(info);
                 }
             }
-            //Console.WriteLine("完了");
+            Console.WriteLine("完了");
             return new Data
             {
-                Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成,通常は暫定値ですが、新しく未更新の場合は速報値となります,各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます,詳細: " + url,
+                Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細: " + url,
                 Created = DateTime.Now,
                 Version = Form1.VERSION,
                 Earthquakes = [.. eqInfos],
