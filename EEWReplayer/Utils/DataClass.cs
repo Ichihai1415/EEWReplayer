@@ -558,14 +558,16 @@ namespace EEWReplayer.Utils
         public DateTime EndTime { get; set; } = DateTime.MinValue;
         public TimeSpan DrawSpan { get; set; } = TimeSpan.Zero;
 
-        public class Size
+        public C_Size Size { get; set; } = new C_Size(0);
+
+        public class C_Size
         {
-            public Size(int height)
+            public C_Size(int height)
             {
                 Width = height * 16 / 9;
                 Height = height;
             }
-            public Size(int width, int height)
+            public C_Size(int width, int height)
             {
                 Width = width;
                 Height = height;
@@ -573,6 +575,8 @@ namespace EEWReplayer.Utils
 
             public int Width { get; } = 0;
             public int Height { get; } = 0;
+
+            public Size ToDrawingSize() => new(Width, Height);
         }
     }
 }

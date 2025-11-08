@@ -22,17 +22,17 @@ namespace EEWReplayer
         {
             InitializeComponent();
         }
-        internal static readonly Form2_progress f = new();
+        internal static readonly Form2_progress f2 = new();
+        internal static readonly Form_DevHelper fd = new();
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            f.Show();
+            f2.Show();
             //Form_GetAllEEW form_GetAllEEW = new();
             //form_GetAllEEW.Show();
             //Form_StatisticsMaker form_StatisticsMaker = new();
             //form_StatisticsMaker.Show();
-            Form_DevHelper form_DevHelper = new();
-            form_DevHelper.Show();
+            fd.Show();
 
             //f.displayText.Text += "\noob";
         }

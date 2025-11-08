@@ -15,12 +15,14 @@ namespace EEWReplayer.Devs
             InitializeComponent();
         }
 
-        private void Form_DevHelper_Load(object sender, EventArgs e)
+        private async void Form_DevHelper_Load(object sender, EventArgs e)
         {
             //GetAllEEW();
             //JMAXML2OriginalJSON();
             //StatisticsMaker();
-            DataMerger();
+            //DataMerger();
+
+            await Draw.DrawFlowEx();
         }
 
         private static async void GetAllEEW()
@@ -61,7 +63,7 @@ namespace EEWReplayer.Devs
                 var eqCells = eqRow.QuerySelectorAll("td");
                 var detailUrl = eqCells[4].QuerySelector("a")?.GetAttribute("href")!.Replace("./", "https://www.data.jma.go.jp/eew/data/nc/pub_hist/").Replace("reachtime/reachtime.html", "fc/index.html")!;
                 detailURLs.Add(detailUrl);
-                Form1.f.AddLine(eqCells[0].TextContent + "　" + detailUrl);
+                Form1.f2.AddLine(eqCells[0].TextContent + "　" + detailUrl);
                 var data = await GetData.GetDetail(detailUrl);
                 Directory.CreateDirectory("datas");
                 File.WriteAllText("datas\\" + detailUrl.Split('/')[9] + ".json", JsonSerializer.Serialize(data, Form1.options));
@@ -165,21 +167,21 @@ namespace EEWReplayer.Devs
                 //var (warnAreas, warnCodes) = warnLastEEW.GetWarningAreas();
                 var a = json.EEWLists[0].GetAllWarningAreas();
 
-                Form1.f.AddLine(json.Earthquakes[0].OriginTime + " " + json.Earthquakes[0].HypoName + ((a.Length == 0) ? "" : "\n"));
+                Form1.f2.AddLine(json.Earthquakes[0].OriginTime + " " + json.Earthquakes[0].HypoName + ((a.Length == 0) ? "" : "\n"));
                 foreach (var warnAreas in a)
-                    Form1.f.AddLine(string.Join(' ', warnAreas.areaNames!) + "\n");
-                Form1.f.AddLine("---");
+                    Form1.f2.AddLine(string.Join(' ', warnAreas.areaNames!) + "\n");
+                Form1.f2.AddLine("---");
                 foreach (var code in a[^1].areaCodes ?? [])
                     if (codeCounter.TryGetValue(code, out int value))
                         codeCounter[code] = ++value;
             }
             Console.WriteLine("Done");
-            Form1.f.AddLine("warn: codes");
+            Form1.f2.AddLine("warn: codes");
             foreach (var kvp in codeCounter.OrderBy(x => x.Key))
-                Form1.f.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
-            Form1.f.AddLine("---\nwarn: codes");
+                Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+            Form1.f2.AddLine("---\nwarn: codes");
             foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
-                Form1.f.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+                Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
 
         }
 
@@ -191,7 +193,7 @@ namespace EEWReplayer.Devs
             foreach (string filePath in jsonFiles)
             {
                 var jsonString = File.ReadAllText(filePath);
-                Form1.f.AddLine(filePath);
+                Form1.f2.AddLine(filePath);
                 var json = JsonSerializer.Deserialize<Data>(jsonString, Form1.options)!;
                 datas.Add(json);
             }

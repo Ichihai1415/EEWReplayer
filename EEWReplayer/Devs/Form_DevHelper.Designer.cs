@@ -32,9 +32,11 @@
             // 
             // Form_DevHelper
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(800, 450);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "Form_DevHelper";
             Text = "Form_DevHelper";
             Load += Form_DevHelper_Load;

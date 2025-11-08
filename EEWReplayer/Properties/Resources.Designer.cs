@@ -61,6 +61,26 @@ namespace EEWReplayer.Properties {
         }
         
         /// <summary>
+        ///   {&quot;type&quot;:&quot;FeatureCollection&quot;, &quot;features&quot;: [
+        ///{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[141.49062527873366,43.68444110807076],[141.46871167290544,43.70077944061876],[141.4173361086746,43.711196946182156],[141.4049841631886,43.73778610844221],[141.37127333259832,43.72762055874182],[141.3374300003943,43.73749444121552],[141.33107277558815,43.70759666685274],[141.34945888511947,43.66745444076986],[141.35221555090698,43.64120250539139],[141.3655327756171,43.617426667107054],[141.3827990529340 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AreaForecastLocalE_GIS_20240520_01 {
+            get {
+                return ResourceManager.GetString("AreaForecastLocalE_GIS_20240520_01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   
+        /// に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string eew_kunren {
+            get {
+                return ResourceManager.GetString("eew-kunren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   {
         ///  &quot;Description&quot;: &quot;2024年11月5日実施 気象庁 緊急地震速報訓練(国等の参加機関向け),地震データなし,本来はa~gが1秒おきに配信されます,震度、発生時刻はこちらが作成したものです,地域は図を参考にしたため間違いがある可能性があります(小笠原諸島は不明です),詳細: https://www.data.jma.go.jp/svd/eew/data/nc/kunren/2024/kunrenmap.pdf&quot;,
         ///  &quot;Earthquakes&quot;: [],
@@ -75,9 +95,35 @@ namespace EEWReplayer.Properties {
         ///          &quot;HypoName&quot;: &quot;十勝沖&quot;,
         ///          &quot;HypoLat&quot;: 41.5,        /// [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string eew_kunren {
+        internal static string eew_kunren_old_ {
             get {
-                return ResourceManager.GetString("eew-kunren", resourceCulture);
+                return ResourceManager.GetString("eew_kunren_old_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   {
+        ///  &quot;Version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;Created&quot;: &quot;2025-11-08T13:05:44.9611036+09:00&quot;,
+        ///  &quot;Description&quot;: &quot;気象庁防災情報XMLから生成。&quot;,
+        ///  &quot;Comment&quot;: &quot;Project DM-D.S.S.より2025年11月5日の緊急地震速報の訓練データです。&quot;,
+        ///  &quot;ID&quot;: &quot;jma-xml_20251105095956&quot;,
+        ///  &quot;Earthquakes&quot;: [],
+        ///  &quot;EEWLists&quot;: [
+        ///    {
+        ///      &quot;ID&quot;: &quot;20251105095956&quot;,
+        ///      &quot;Source&quot;: &quot;JMA-XML&quot;,
+        ///      &quot;EEWs&quot;: [
+        ///        {
+        ///          &quot;Serial&quot;: 1,
+        ///          &quot;UpdateTime&quot;: &quot;2025-11-05T10:00:00+09:00&quot;,
+        ///          &quot;OriginTime&quot;: &quot;2025-11-05T09:59:40+09:00&quot;,
+        ///          &quot;HypoName&quot;: &quot;十勝沖&quot;,
+        ///      [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string jma_xml_20251105095956 {
+            get {
+                return ResourceManager.GetString("jma_xml_20251105095956", resourceCulture);
             }
         }
     }
