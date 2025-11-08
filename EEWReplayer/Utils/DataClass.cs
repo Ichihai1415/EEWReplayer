@@ -324,6 +324,11 @@ namespace EEWReplayer.Utils
                 public class IntensityArea
                 {
                     /// <summary>
+                    /// 初期化コンストラクト
+                    /// </summary>
+                    public IntensityArea() { }
+
+                    /// <summary>
                     /// 初期化コンストラクト（通常追加）
                     /// </summary>
                     /// <param name="intensity">震度（詳細）</param>
@@ -383,18 +388,18 @@ namespace EEWReplayer.Utils
                 /// <summary>
                 /// 警報対象（相当）地域を取得します。
                 /// </summary>
-                /// <remarks>この情報での警報対象のみで、<see cref="IsWarn"/>が<see cref="false"/>の場合実際の対象地域と異なる場合があります。また、警報2報以降の場合警報発表されたものの予測が基準以下になった場合入りません。<see cref="EEWList.GetWarningAreas()"/>で正確な地域を取得できます。</remarks>
+                /// <remarks>この情報での警報対象のみで、<see cref="IsWarn"/>が<see cref="false"/>の場合実際の対象地域と異なる場合があります。また、警報2報以降の場合警報発表されたものの予測が基準以下になった場合入りません。<see cref="EEWList.GetAllWarningAreas()"/>で正確な地域を取得できます。</remarks>
                 /// <returns>推定震度4以上または推定長周期地震動階級3以上の地域</returns>
                 public (string[] warnAreas, int[] warnCodes) GetWarningAreas()
                 {
                     var warnAreas = IntensityAreas.Where(x => (Intensity.S7 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.S4) || (Intensity.L4 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.L3));
                     var areaNames = warnAreas.SelectMany(x => x.AreaNames).Distinct().ToArray();
                     var areaCodes = warnAreas.SelectMany(x => x.AreaCodes).Distinct().ToArray();
-                    if (areaNames.Length != areaCodes.Length)//todo:確認
-                        throw new Exception($"area-code is not fully converted({areaNames.Length}-{areaCodes.Length})");
+                    //if (areaNames.Length != areaCodes.Length)
+                    //    throw new Exception($"area-code is not fully converted({areaNames.Length}-{areaCodes.Length})");
                     //return (areaNames.Length > 0 ? areaNames : null, areaCodes.Length > 0 ? areaCodes : null);
                     return (areaNames, areaCodes);
-                }
+                }//支庁は修正　レベル法だと数が合わない  最大震度５弱程度以上と推定	石川県珠洲市付近 https://www.data.jma.go.jp/eew/data/nc/pub_hist/2024/06/20240603063142/fc/index.html
 
                 /// <summary>
                 /// ディープコピーします。
@@ -413,21 +418,21 @@ namespace EEWReplayer.Utils
             /// 警報発表毎の対象地域を取得します。
             /// </summary>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
-            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas() => GetWarningAreas(int.MaxValue);
+            public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas() => GetAllWarningAreas(int.MaxValue);
 
             /// <summary>
             /// 警報発表毎の対象地域を取得します。
             /// </summary>
             /// <param name="onlyNewArea">追加地域のみにするか</param>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
-            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(bool onlyNewArea) => GetWarningAreas(int.MaxValue, onlyNewArea);
+            public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas(bool onlyNewArea) => GetAllWarningAreas(int.MaxValue, onlyNewArea);
 
             /// <summary>
             /// 警報発表毎の対象地域を取得します。
             /// </summary>
             /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
-            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(int endSerial) => GetWarningAreas(endSerial, false);
+            public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas(int endSerial) => GetAllWarningAreas(endSerial, false);
 
             /// <summary>
             /// 警報発表毎の対象地域を取得します。
@@ -435,7 +440,7 @@ namespace EEWReplayer.Utils
             /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
             /// <param name="onlyNewArea">追加地域のみにするか</param>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
-            public (string[] areaNames, int[] areaCodes)[] GetWarningAreas(int endSerial, bool onlyNewArea)
+            public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas(int endSerial, bool onlyNewArea)
             {
                 var eew_warn = EEWs.Where(eew => eew.Serial <= endSerial).Where(eew => eew.IsWarn);
                 var result = new List<(string[] areaNames, int[] areaCodes)>();

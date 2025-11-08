@@ -17,13 +17,14 @@ namespace EEWReplayer.Devs
 
         private void Form_DevHelper_Load(object sender, EventArgs e)
         {
-            GetAllEEW();
-            JMAXML2OriginalJSON();
+            //GetAllEEW();
+            //JMAXML2OriginalJSON();
+            StatisticsMaker();
         }
 
         private static async void GetAllEEW()
         {
-            Directory.CreateDirectory("Test");
+            //Directory.CreateDirectory("Test");
 
             //var d_new = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/pub_hist/2024/01/20240101161010/fc/index.html");
             //File.WriteAllText("Test\\d_new.json", JsonSerializer.Serialize(d_new,options));
@@ -33,7 +34,15 @@ namespace EEWReplayer.Devs
             //File.WriteAllText("Test\\d_s0.json", JsonSerializer.Serialize(d_s0, options));
 
 
-            //var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/10/20251019222354/index.html");
+            //var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/pub_hist/2008/06/20080614084350/content/content_out.html");
+
+            ////var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/10/20251019222354/index.html");
+
+            //var da = d.EEWLists[0].GetAllWarningAreas();
+            //var db = d.EEWLists[0].GetAllWarningAreas(true);
+            //var dc = d.EEWLists[0].GetAllWarningAreas(4);
+            //var dd = d.EEWLists[0].GetAllWarningAreas(1);
+
             //File.WriteAllText("Test\\d.json", JsonSerializer.Serialize(d, Form1.options));
             //return;
 
@@ -134,7 +143,43 @@ namespace EEWReplayer.Devs
             Console.WriteLine();
         }
 
-        private static void JSONMarger()
+
+        public const string DIR = "datas";
+        private static void StatisticsMaker()
+        {
+            var jsonFiles = Directory.EnumerateFiles(DIR, "*.json", SearchOption.AllDirectories);
+            var datas = new List<Data>();
+            var codeCounter = new Dictionary<int, int>();
+            foreach (var kvp in ConvertSource.AreaForecastE_Code2Name)
+                codeCounter[kvp.Key] = 0;
+            foreach (string filePath in jsonFiles)
+            {
+                var jsonString = File.ReadAllText(filePath);
+                var json = JsonSerializer.Deserialize<Data>(jsonString, Form1.options)!;
+                datas.Add(json);
+                //var warnLastEEW = json.EEWLists[0].EEWs.Where(x => x.IsWarn == true).Last();
+                //var (warnAreas, warnCodes) = warnLastEEW.GetWarningAreas();
+                var a = json.EEWLists[0].GetAllWarningAreas();
+
+                Form1.f.AddLine(json.Earthquakes[0].OriginTime + " " + json.Earthquakes[0].HypoName + ((a.Length == 0) ? "" : "\n"));
+                foreach (var warnAreas in a)
+                    Form1.f.AddLine(string.Join(' ', warnAreas.areaNames!) + "\n");
+                Form1.f.AddLine("---");
+                foreach (var code in a[^1].areaCodes ?? [])
+                    if (codeCounter.TryGetValue(code, out int value))
+                        codeCounter[code] = ++value;
+            }
+            Console.WriteLine("Done");
+            Form1.f.AddLine("warn: codes");
+            foreach (var kvp in codeCounter.OrderBy(x => x.Key))
+                Form1.f.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+            Form1.f.AddLine("---\nwarn: codes");
+            foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
+                Form1.f.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+
+        }
+
+        private static void DataMerger()
         {
         }
     }

@@ -18,11 +18,15 @@ namespace EEWReplayer.Utils
         {
             return [.. areas.Select(area =>
             {
-                if (ConvertSource.AreaForecastE_Name2Code.TryGetValue(area.Replace("支庁", "地方"), out var code))
+                if (ConvertSource.AreaForecastE_Name2Code.TryGetValue(area.Replace("網走支庁網走", "網走地方").Replace("網走支庁北見", "北見地方").Replace("網走支庁紋別", "紋別地方").Replace("支庁", "地方"), out var code))
                     return code;
                 else
                 {
                     Console.WriteLine($"code not exist: {area}");
+                    if(area.EndsWith("付近"))
+                        Console.WriteLine("(レベル法のため地域コードなし)");
+                    else
+                        throw new Exception($"code not exist: {area}");
                     return -1;
                 }
             }).Where(value => value != -1)];
@@ -437,7 +441,7 @@ namespace EEWReplayer.Utils
             };
             #endregion
 
-            #region AreaForecastE_Nname2Code
+            #region AreaForecastE_Name2Code
             public static readonly Dictionary<string, int> AreaForecastE_Name2Code = new()
             {
                 { "石狩地方北部", 100 },
