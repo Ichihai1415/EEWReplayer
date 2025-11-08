@@ -167,9 +167,10 @@ namespace EEWReplayer.Utils
             Console.WriteLine("完了");
             return new Data
             {
-                Description = "気象庁ホームページ(緊急地震速報(予報)の内容)より生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細: " + url,
-                Created = DateTime.Now,
                 Version = Form1.VERSION,
+                Created = DateTime.Now,
+                Description = "気象庁ホームページ 緊急地震速報(予報)の内容から生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細ページ: " + url,
+                ID = "jma-hist_" + url.Split('/')[9],
                 Earthquakes = [.. eqInfos],
                 EEWLists = [new Data.EEWList([.. eew], "JMA-EEW-HIST", url.Split('/')[9])]
             };

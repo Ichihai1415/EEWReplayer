@@ -18,9 +18,9 @@ namespace EEWReplayer.Devs
         private void Form_DevHelper_Load(object sender, EventArgs e)
         {
             //GetAllEEW();
-            JMAXML2OriginalJSON();
+            //JMAXML2OriginalJSON();
             //StatisticsMaker();
-            //DataMerger();
+            DataMerger();
         }
 
         private static async void GetAllEEW()
@@ -73,7 +73,7 @@ namespace EEWReplayer.Devs
         {
 
             var serializer = new XmlSerializer(typeof(C_Report)) ?? throw new Exception("XmlSerializerの初期化に失敗しました。");
-            var dir = @"D:\Ichihai1415\data\json\dmdss\";
+            var dir = @"D:\Ichihai1415\data\xml\dmdss\";
             //var dir = @"C:\Users\proje\Downloads\dmdss\";
             var filesA = new string[] { "VXSE45_RJTD_20240101071016_2e3c66b", "VXSE45_RJTD_20240101071016_cbd2993", "VXSE45_RJTD_20240101071040_a87ff13", "VXSE45_RJTD_20240101071043_c1d2523" };
             var filesB = new string[] { "VXSE45_RJTD_20251105010000_03043bf", "VXSE45_RJTD_20251105010001_1951c50", "VXSE45_RJTD_20251105010002_ba86932", "VXSE45_RJTD_20251105010003_b71c135", "VXSE45_RJTD_20251105010004_d1e7a2e", "VXSE45_RJTD_20251105010005_807b072", "VXSE45_RJTD_20251105010006_fe70bb8" };
@@ -119,7 +119,8 @@ namespace EEWReplayer.Devs
                 {
                     Version = Form1.VERSION,
                     Created = DateTime.Now,
-                    Description = "気象庁防災情報XMLから作成",
+                    Description = "気象庁防災情報XMLから生成。",
+                    ID = "jma-xml_" + report.Head.EventID,
                     Earthquakes = [],
                     EEWLists = [new Data.EEWList([new Data.EEWList.EEW()
                     {
@@ -133,7 +134,7 @@ namespace EEWReplayer.Devs
                         Magnitude = report.Body_seismology1.Earthquake[0].Magnitude[0].Value,
                         IsWarn = isWarn,
                         MaxIntensityD = IntensityD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastInt.From, report.Body_seismology1.Intensity.Forecast.ForecastInt.To),
-                        MaxIntensityLgD = report.Body_seismology1.Intensity.Forecast.ForecastLgInt==null ? new DetailedIntensity() : IntensityLgD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
+                        MaxIntensityLgD = report.Body_seismology1.Intensity.Forecast.ForecastLgInt == null ? new DetailedIntensity() : IntensityLgD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
                         IntensityAreas = SortIntensityAreas(intensityAreas_dict),
                         IntensityLgAreas = SortIntensityAreas(intensityLgAreas_dict),
 
@@ -194,7 +195,10 @@ namespace EEWReplayer.Devs
                 var json = JsonSerializer.Deserialize<Data>(jsonString, Form1.options)!;
                 datas.Add(json);
             }
-
+            var data = datas.First().DeepCopy();
+            for (int i = 1; i < datas.Count; i++)
+                data.AddEarthquakeEEW(datas[i]);
+            File.WriteAllText(mdir + "\\" + data.ID + ".json", JsonSerializer.Serialize(data, Form1.options));
 
         }
     }

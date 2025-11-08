@@ -12,6 +12,8 @@ namespace EEWReplayer.Utils
          * |- Version <string>
          * |- Created <DateTime>
          * |- Description <string>
+         * |- Comment <string>
+         * |- ID <string>
          * |- Earthquakes <Array<Object(class("Earthquake"))>>
          * |  |- ID <string>
          * |  |- Source <string>
@@ -67,7 +69,11 @@ namespace EEWReplayer.Utils
         /// <param name="src">コピー元</param>
         public Data(Data src)
         {
+            Version = src.Version;
+            Created = src.Created;
             Description = src.Description;
+            Comment = src.Comment;
+            ID = src.ID;
             Earthquakes = [.. src.Earthquakes.Select(srcEq => srcEq.DeepCopy())];
             EEWLists = [.. src.EEWLists.Select(srcEEWLists => srcEEWLists)];
         }
@@ -83,9 +89,19 @@ namespace EEWReplayer.Utils
         public DateTime Created { get; set; } = DateTime.MinValue;
 
         /// <summary>
-        /// 説明
+        /// （固定）説明
         /// </summary>
         public string Description { get; set; } = "";
+
+        /// <summary>
+        /// 自由記述
+        /// </summary>
+        public string Comment { get; set; } = "(自由に記述できます)";
+
+        /// <summary>
+        /// データID
+        /// </summary>
+        public string ID { get; set; } = "";
 
         /// <summary>
         /// 地震情報リスト
