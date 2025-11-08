@@ -459,6 +459,17 @@ namespace EEWReplayer.Utils
                 return [.. result];
             }
 
+            /// <summary>
+            /// 緊急地震速報を追加します。
+            /// </summary>
+            /// <param name="eew">緊急地震速報</param>
+            public void AddEEW(EEW eew) => EEWs = [.. EEWs, eew];
+
+            /// <summary>
+            /// 緊急地震速報のリストを追加します。
+            /// </summary>
+            /// <param name="eews">緊急地震速報のリスト</param>
+            public void AddEEW(EEW[] eews) => EEWs = [.. EEWs, .. eews];
         }
 
         /// <summary>
@@ -466,6 +477,52 @@ namespace EEWReplayer.Utils
         /// </summary>
         /// <returns>コピーされたインスタンス</returns>
         public Data DeepCopy() => new(this);
+
+        /// <summary>
+        /// 地震情報のリストを追加します。
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddEarthquake(Data data) => AddEarthquake(data.Earthquakes);
+
+        /// <summary>
+        /// 地震情報を追加します。
+        /// </summary>
+        /// <param name="earthquake"></param>
+        public void AddEarthquake(Earthquake earthquake) => Earthquakes = [.. Earthquakes, earthquake];
+
+        /// <summary>
+        /// 地震情報のリストを追加します。
+        /// </summary>
+        /// <param name="earthquakes"></param>
+        public void AddEarthquake(Earthquake[] earthquakes) => Earthquakes = [.. Earthquakes, .. earthquakes];
+
+        /// <summary>
+        /// 緊急地震速報リストを追加します。
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddEEWList(Data data) => AddEEWList(data.EEWLists);
+
+        /// <summary>
+        /// 一連の緊急地震速報を追加します。
+        /// </summary>
+        /// <param name="eewList"></param>
+        public void AddEEWList(EEWList eewList) => EEWLists = [.. EEWLists, eewList];
+
+        /// <summary>
+        /// 一連の緊急地震速報のリストを追加します。
+        /// </summary>
+        /// <param name="eewLists"></param>
+        public void AddEEWList(EEWList[] eewLists) => EEWLists = [.. EEWLists, .. eewLists];
+
+        /// <summary>
+        /// 地震情報のリストと一連の緊急地震速報のリストを追加します。
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddEarthquakeEEW(Data data)
+        {
+            AddEarthquake(data.Earthquakes);
+            AddEEWList(data.EEWLists);
+        }
     }
 
     public class DrawConfig

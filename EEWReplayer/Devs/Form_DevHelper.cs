@@ -18,8 +18,9 @@ namespace EEWReplayer.Devs
         private void Form_DevHelper_Load(object sender, EventArgs e)
         {
             //GetAllEEW();
-            //JMAXML2OriginalJSON();
-            StatisticsMaker();
+            JMAXML2OriginalJSON();
+            //StatisticsMaker();
+            //DataMerger();
         }
 
         private static async void GetAllEEW()
@@ -79,7 +80,7 @@ namespace EEWReplayer.Devs
 
             var files = new string[] { "VXSE45_JPOS_20250317200042_49acff6" };
 
-            foreach (var fileName in files)
+            foreach (var fileName in files.Concat(filesA).Concat(filesB))
             {
                 var xmlSt = File.ReadAllText(dir + fileName + ".xml");
                 using var reader = new StringReader(xmlSt);
@@ -108,7 +109,7 @@ namespace EEWReplayer.Devs
                     if (!intensityAreas_dict.ContainsKey(maxIntLg))
                         intensityAreas_dict[maxIntLg] = [];
                     intensityAreas_dict[maxInt].Add((areaName, areaCode));
-                    if (maxIntLg.IsNull)
+                    if (!maxIntLg.IsNull)
                         intensityAreas_dict[maxIntLg].Add((areaName, areaCode));
                 }
 
@@ -134,11 +135,11 @@ namespace EEWReplayer.Devs
                         MaxIntensityLgD = report.Body_seismology1.Intensity.Forecast.ForecastLgInt==null ? new DetailedIntensity() : IntensityLgD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
                         IntensityAreas = SortIntensityAreas(intensityAreas_dict),
 
-                    }], report.Head.EventID)]
+                    }],"JMA-XML", report.Head.EventID)]
                 };
 
                 Directory.CreateDirectory("datasx");
-                File.WriteAllText("datasx\\" + fileName + "_" + data.EEWLists[0].ID + "-" + data.EEWLists[0].EEWs[0].Serial + ".json", JsonSerializer.Serialize(data, Form1.options));
+                File.WriteAllText("datasx\\" + fileName + "-" + data.EEWLists[0].ID + "-" + data.EEWLists[0].EEWs[0].Serial + ".json", JsonSerializer.Serialize(data, Form1.options));
             }
             Console.WriteLine();
         }
@@ -181,6 +182,18 @@ namespace EEWReplayer.Devs
 
         private static void DataMerger()
         {
+            string mdir = "data-merge\\a";
+            var jsonFiles = Directory.EnumerateFiles(mdir, "*.json", SearchOption.AllDirectories);
+            var datas = new List<Data>();
+            foreach (string filePath in jsonFiles)
+            {
+                var jsonString = File.ReadAllText(filePath);
+                Form1.f.AddLine(filePath);
+                var json = JsonSerializer.Deserialize<Data>(jsonString, Form1.options)!;
+                datas.Add(json);
+            }
+
+
         }
     }
 }
