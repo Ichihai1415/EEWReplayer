@@ -158,7 +158,8 @@ namespace EEWReplayer.Utils
                         Magnitude = eewCells[6].TextContent == "---" || eewCells[6].TextContent == "不明" ? double.NaN : double.Parse(eewCells[6].TextContent),
                         IsWarn = eewRow.ClassList.Contains("eew_public_warning_row"),
                         MaxIntensityD = intArea.First().MaxIntensityD,
-                        IntensityAreas = [.. intArea.Where(x => x.AreaNames.Length != 0)]
+                        IntensityAreas = [.. intArea.Where(x => x.AreaNames.Length != 0).Where(x => (int)x.MaxIntensityD.Max < 10)],
+                        IntensityLgAreas = [.. intArea.Where(x => x.AreaNames.Length != 0).Where(x => (int)x.MaxIntensityD.Max >= 10)]
                     };
                     eew.Add(info);
                 }

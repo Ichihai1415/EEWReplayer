@@ -38,12 +38,16 @@ namespace EEWReplayer.Utils
          *      |- Magnitude <double>
          *      |- IsWarn <bool>
          *      |- MaxIntensity <enum("Intensity")>
-         *      |- IntensityAreas[] <Array<Object(class("IntensityArea")>>
+         *      |- IntensityAreas <Array<Object(class("IntensityArea")>>
+         *      |  |- MaxIntensityD <Object(struct("DetailedIntensity"))>
+         *      |  |  |- From <enum("Intensity")>
+         *      |  |  |- To <enum("Intensity")>
+         *      |  |  |- Max <enum("Intensity")>
+         *      |  |
+         *      |  |- AreaNames <Array<string>>
+         *      |  |- AreaCodes <Array<int>>
+         *      |- IntensityLgAreas <Array<Object(class("IntensityArea")>>
          *         |- MaxIntensityD <Object(struct("DetailedIntensity"))>
-         *         |  |- From <enum("Intensity")>
-         *         |  |- To <enum("Intensity")>
-         *         |  |- Max <enum("Intensity")>
-         *         |- MaxIntensityLgD <Object(struct("DetailedIntensity"))>
          *         |  |- From <enum("Intensity")>
          *         |  |- To <enum("Intensity")>
          *         |  |- Max <enum("Intensity")>
@@ -255,6 +259,7 @@ namespace EEWReplayer.Utils
                     MaxIntensityD = src.MaxIntensityD;
                     MaxIntensityLgD = src.MaxIntensityLgD;
                     IntensityAreas = [.. src.IntensityAreas.Select(srcArea => srcArea.DeepCopy())];
+                    IntensityLgAreas = [.. src.IntensityLgAreas.Select(srcArea => srcArea.DeepCopy())];
                 }
 
                 /// <summary>
@@ -316,6 +321,11 @@ namespace EEWReplayer.Utils
                 /// 地域別推定震度情報リスト
                 /// </summary>
                 public IntensityArea[] IntensityAreas { get; set; } = [];
+
+                /// <summary>
+                /// 地域別推定長周期地震動階級情報リスト
+                /// </summary>
+                public IntensityArea[] IntensityLgAreas { get; set; } = [];
 
                 /// <summary>
                 /// 地域別推定震度情報
@@ -392,7 +402,8 @@ namespace EEWReplayer.Utils
                 /// <returns>推定震度4以上または推定長周期地震動階級3以上の地域</returns>
                 public (string[] warnAreas, int[] warnCodes) GetWarningAreas()
                 {
-                    var warnAreas = IntensityAreas.Where(x => (Intensity.S7 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.S4) || (Intensity.L4 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.L3));
+                    var warnAreas = IntensityAreas.Where(x => Intensity.S7 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.S4)
+                        .Concat(IntensityLgAreas.Where(x => Intensity.L4 >= x.MaxIntensityD.Max && x.MaxIntensityD.Max >= Intensity.L3));
                     var areaNames = warnAreas.SelectMany(x => x.AreaNames).Distinct().ToArray();
                     var areaCodes = warnAreas.SelectMany(x => x.AreaCodes).Distinct().ToArray();
                     //if (areaNames.Length != areaCodes.Length)

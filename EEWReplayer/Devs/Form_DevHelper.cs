@@ -98,6 +98,7 @@ namespace EEWReplayer.Devs
                 }
 
                 var intensityAreas_dict = new Dictionary<DetailedIntensity, List<(string areaName, int areaCode)>>();
+                var intensityLgAreas_dict = new Dictionary<DetailedIntensity, List<(string areaName, int areaCode)>>();
                 foreach (var area in report.Body_seismology1.Intensity.Forecast.Pref.Select(p => p.Area))
                 {
                     var maxInt = IntensityD_JMAxmlString2Enum(area[0].ForecastInt.From, area[0].ForecastInt.To);
@@ -106,13 +107,13 @@ namespace EEWReplayer.Devs
                     var areaCode = int.TryParse(area[0].Code, out var c) ? c : 0;
                     if (!intensityAreas_dict.ContainsKey(maxInt))
                         intensityAreas_dict[maxInt] = [];
-                    if (!intensityAreas_dict.ContainsKey(maxIntLg))
-                        intensityAreas_dict[maxIntLg] = [];
-                    intensityAreas_dict[maxInt].Add((areaName, areaCode));
+                    if (!intensityLgAreas_dict.ContainsKey(maxIntLg))
+                        intensityLgAreas_dict[maxIntLg] = [];
+                    if (!maxInt.IsNull)
+                        intensityAreas_dict[maxInt].Add((areaName, areaCode));
                     if (!maxIntLg.IsNull)
-                        intensityAreas_dict[maxIntLg].Add((areaName, areaCode));
+                        intensityLgAreas_dict[maxIntLg].Add((areaName, areaCode));
                 }
-
 
                 var data = new Data()
                 {
@@ -134,6 +135,7 @@ namespace EEWReplayer.Devs
                         MaxIntensityD = IntensityD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastInt.From, report.Body_seismology1.Intensity.Forecast.ForecastInt.To),
                         MaxIntensityLgD = report.Body_seismology1.Intensity.Forecast.ForecastLgInt==null ? new DetailedIntensity() : IntensityLgD_JMAxmlString2Enum(report.Body_seismology1.Intensity.Forecast.ForecastLgInt.From, report.Body_seismology1.Intensity.Forecast.ForecastLgInt.To),
                         IntensityAreas = SortIntensityAreas(intensityAreas_dict),
+                        IntensityLgAreas = SortIntensityAreas(intensityLgAreas_dict),
 
                     }],"JMA-XML", report.Head.EventID)]
                 };
