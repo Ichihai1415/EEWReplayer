@@ -81,8 +81,28 @@ namespace EEWReplayer.Properties {
         }
         
         /// <summary>
+        ///   {
+        ///  &quot;Version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;Created&quot;: &quot;2025-11-11T16:27:35.9139938+09:00&quot;,
+        ///  &quot;Description&quot;: &quot;気象庁ホームページ 緊急地震速報(予報)の内容から生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細ページ: https://www.data.jma.go.jp/eew/data/nc/pub_hist/2024/06/20240603063142/fc/index.html&quot;,
+        ///  &quot;Comment&quot;: &quot;(自由に記述できます)&quot;,
+        ///  &quot;ID&quot;: &quot;jma-hist_20240603063142&quot;,
+        ///  &quot;Earthquakes&quot;: [
+        ///    {
+        ///      &quot;ID&quot;: &quot;20240603063142&quot;,
+        ///      &quot;Source&quot;: &quot;JMA-EEW-HIST&quot;,
+        ///      &quot;OriginTime&quot;: &quot;2024-06-03T06:31:40.3&quot;,
+        ///      &quot; [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string _20240603063142 {
+            get {
+                return ResourceManager.GetString("_20240603063142", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   {&quot;type&quot;:&quot;FeatureCollection&quot;, &quot;features&quot;: [
-        ///{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[141.49062527873366,43.68444110807076],[141.46871167290544,43.70077944061876],[141.4173361086746,43.711196946182156],[141.4049841631886,43.73778610844221],[141.37127333259832,43.72762055874182],[141.3374300003943,43.73749444121552],[141.33107277558815,43.70759666685274],[141.34945888511947,43.66745444076986],[141.35221555090698,43.64120250539139],[141.3655327756171,43.617426667107054],[141.3827990529340 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[141.49062527873366,43.68444110807076],[141.46871167290544,43.70077944061876],[141.4173361086746,43.711196946182156],[141.4049841631886,43.73778610844221],[141.37127333259832,43.72762055874182],[141.3374300003943,43.73749444121552],[141.33107277558815,43.70759666685274],[141.34945888511947,43.66745444076986],[141.35221555090698,43.64120250539139],[141.3655327756171,43.617426667107054],[141.382799052934 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AreaForecastLocalE_GIS_20240520_01 {
             get {
@@ -118,6 +138,26 @@ namespace EEWReplayer.Properties {
         internal static string eew_kunren_old_ {
             get {
                 return ResourceManager.GetString("eew_kunren_old_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   {
+        ///  &quot;Version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;Created&quot;: &quot;2025-11-11T15:22:46.9207794+09:00&quot;,
+        ///  &quot;Description&quot;: &quot;気象庁ホームページ 緊急地震速報(予報)の内容から生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細ページ: https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/11/20251109170343/index.html&quot;,
+        ///  &quot;Comment&quot;: &quot;(自由に記述できます)&quot;,
+        ///  &quot;ID&quot;: &quot;jma-hist_20251109170343&quot;,
+        ///  &quot;Earthquakes&quot;: [
+        ///    {
+        ///      &quot;ID&quot;: &quot;20251109170343&quot;,
+        ///      &quot;Source&quot;: &quot;JMA-EEW-HIST&quot;,
+        ///      &quot;OriginTime&quot;: &quot;2025-11-09T17:03:39.2&quot;,
+        ///      &quot;Hypo [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string jma_hist_20251109170343 {
+            get {
+                return ResourceManager.GetString("jma-hist_20251109170343", resourceCulture);
             }
         }
         

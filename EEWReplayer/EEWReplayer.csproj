@@ -17,9 +17,14 @@
     <RepositoryUrl>https://github.com/Ichihai1415/EEWReplayer</RepositoryUrl>
     <NeutralLanguage>ja-JP</NeutralLanguage>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Configurations>Debug;Release;Dbg_Tab</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dbg_Tab|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 

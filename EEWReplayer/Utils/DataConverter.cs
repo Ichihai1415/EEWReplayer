@@ -23,10 +23,16 @@ namespace EEWReplayer.Utils
                 else
                 {
                     Console.WriteLine($"code not exist: {area}");
-                    if(area.EndsWith("付近"))
+                    if (area.EndsWith("付近"))
                         Console.WriteLine("(レベル法のため地域コードなし)");
+                    else if (area == "")
+                        /*以下の場合
+最大震度３程度以上	
+長周期地震動階級１	宮城県北部
+                         */
+                        Console.WriteLine("(エリアなしのため地域コードなし)");
                     else
-                        throw new Exception($"code not exist: {area}");
+                        throw new Exception($"Unhandle: code not exist: {area}");
                     return -1;
                 }
             }).Where(value => value != -1)];

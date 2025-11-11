@@ -1,0 +1,1492 @@
+{
+  "Version": "1.0.0",
+  "Created": "2025-11-11T15:22:46.9207794+09:00",
+  "Description": "気象庁ホームページ 緊急地震速報(予報)の内容から生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細ページ: https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/11/20251109170343/index.html",
+  "Comment": "(自由に記述できます)",
+  "ID": "jma-hist_20251109170343",
+  "Earthquakes": [
+    {
+      "ID": "20251109170343",
+      "Source": "JMA-EEW-HIST",
+      "OriginTime": "2025-11-09T17:03:39.2",
+      "HypoName": "三陸沖",
+      "HypoLat": 39.401666666666664,
+      "HypoLon": 143.50666666666666,
+      "HypoDepth": 16,
+      "Magnitude": 6.9,
+      "MaxIntensity": 4,
+      "MaxIntensityLg": -9
+    }
+  ],
+  "EEWLists": [
+    {
+      "ID": "20251109170343",
+      "Source": "JMA-EEW-HIST",
+      "EEWs": [
+        {
+          "Serial": 1,
+          "UpdateTime": "2025-11-09T17:03:50.5",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.5,
+          "HypoDepth": 10,
+          "Magnitude": 4.6,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 2,
+            "To": -3,
+            "Max": 2
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 2,
+          "UpdateTime": "2025-11-09T17:03:51.5",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.5,
+          "HypoDepth": 10,
+          "Magnitude": 5.2,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 2,
+            "To": -3,
+            "Max": 2
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 3,
+          "UpdateTime": "2025-11-09T17:03:53.1",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 10,
+          "Magnitude": 5.5,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 2,
+            "To": -3,
+            "Max": 2
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 4,
+          "UpdateTime": "2025-11-09T17:03:53.3",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 10,
+          "Magnitude": 5.5,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 2,
+            "To": -3,
+            "Max": 2
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 5,
+          "UpdateTime": "2025-11-09T17:03:58.5",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 20,
+          "Magnitude": 6,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 3,
+            "To": -3,
+            "Max": 3
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 6,
+          "UpdateTime": "2025-11-09T17:04:03.5",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 30,
+          "Magnitude": 6.3,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 3,
+            "To": -3,
+            "Max": 3
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": -3,
+                "Max": 3
+              },
+              "AreaNames": [
+                ""
+              ],
+              "AreaCodes": []
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 7,
+          "UpdateTime": "2025-11-09T17:04:05.7",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.3,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 3,
+            "To": -3,
+            "Max": 3
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": -3,
+                "Max": 3
+              },
+              "AreaNames": [
+                ""
+              ],
+              "AreaCodes": []
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 8,
+          "UpdateTime": "2025-11-09T17:04:09.3",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.4,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "青森県三八上北",
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                202,
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県中部"
+              ],
+              "AreaCodes": [
+                222
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 9,
+          "UpdateTime": "2025-11-09T17:04:09.6",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.5,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部"
+              ],
+              "AreaCodes": [
+                202,
+                212,
+                222
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸北部"
+              ],
+              "AreaCodes": [
+                210
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 10,
+          "UpdateTime": "2025-11-09T17:04:13.1",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.5,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部"
+              ],
+              "AreaCodes": [
+                202,
+                212,
+                222
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸北部"
+              ],
+              "AreaCodes": [
+                210
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 11,
+          "UpdateTime": "2025-11-09T17:04:13.3",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.6,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                202,
+                212,
+                222,
+                220
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸南部"
+              ],
+              "AreaCodes": [
+                213
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 12,
+          "UpdateTime": "2025-11-09T17:04:15.4",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.5,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部"
+              ],
+              "AreaCodes": [
+                202,
+                212,
+                222
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸北部"
+              ],
+              "AreaCodes": [
+                210
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 13,
+          "UpdateTime": "2025-11-09T17:04:16.4",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.6,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                202,
+                212,
+                222,
+                220
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 3,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸南部"
+              ],
+              "AreaCodes": [
+                213
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                220
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 14,
+          "UpdateTime": "2025-11-09T17:04:36.2",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.7,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                213,
+                202,
+                212,
+                222,
+                220
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "宮城県北部",
+                "青森県津軽北部",
+                "山形県庄内"
+              ],
+              "AreaCodes": [
+                213,
+                202,
+                220,
+                200,
+                240
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 15,
+          "UpdateTime": "2025-11-09T17:04:42.5",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.7,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                213,
+                202,
+                212,
+                222,
+                220
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "宮城県北部",
+                "青森県津軽北部",
+                "山形県庄内"
+              ],
+              "AreaCodes": [
+                213,
+                202,
+                220,
+                200,
+                240
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 16,
+          "UpdateTime": "2025-11-09T17:05:02",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.8,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                213,
+                202,
+                212,
+                222,
+                220
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "宮城県北部",
+                "青森県津軽北部",
+                "山形県庄内"
+              ],
+              "AreaCodes": [
+                213,
+                202,
+                220,
+                200,
+                240
+              ]
+            }
+          ]
+        },
+        {
+          "Serial": 17,
+          "UpdateTime": "2025-11-09T17:05:12.1",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 39.4,
+          "HypoLon": 143.6,
+          "HypoDepth": 40,
+          "Magnitude": 6.8,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": 4,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": 4,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県沿岸南部",
+                "岩手県沿岸北部",
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "岩手県内陸北部",
+                "宮城県中部",
+                "宮城県北部"
+              ],
+              "AreaCodes": [
+                211,
+                210,
+                213,
+                202,
+                212,
+                222,
+                220
+              ]
+            }
+          ],
+          "IntensityLgAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 11,
+                "To": 11,
+                "Max": 11
+              },
+              "AreaNames": [
+                "岩手県内陸南部",
+                "青森県三八上北",
+                "宮城県北部",
+                "青森県津軽北部",
+                "山形県庄内"
+              ],
+              "AreaCodes": [
+                213,
+                202,
+                220,
+                200,
+                240
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ID": "20251109170446",
+      "Source": "JMA-EEW-HIST",
+      "EEWs": [
+        {
+          "Serial": 1,
+          "UpdateTime": "2025-11-09T17:04:47.7",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": -3,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 2,
+          "UpdateTime": "2025-11-09T17:04:51.7",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": -3,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 3,
+          "UpdateTime": "2025-11-09T17:04:56.7",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": -3,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 4,
+          "UpdateTime": "2025-11-09T17:04:59.6",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 4,
+            "To": -3,
+            "Max": 4
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "岩手県内陸北部",
+                "宮城県北部",
+                "宮城県中部"
+              ],
+              "AreaCodes": [
+                212,
+                220,
+                222
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 5,
+          "UpdateTime": "2025-11-09T17:05:02.6",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": true,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 6,
+          "UpdateTime": "2025-11-09T17:05:08.6",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 7,
+          "UpdateTime": "2025-11-09T17:05:16.7",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 8,
+          "UpdateTime": "2025-11-09T17:05:36",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 9,
+          "UpdateTime": "2025-11-09T17:05:56.2",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 10,
+          "UpdateTime": "2025-11-09T17:06:16",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        },
+        {
+          "Serial": 11,
+          "UpdateTime": "2025-11-09T17:06:21.1",
+          "OriginTime": "2025-11-09T17:03:39.2",
+          "HypoName": "(三陸沖)",
+          "HypoLat": 40.2,
+          "HypoLon": 141.8,
+          "HypoDepth": 10,
+          "Magnitude": 1,
+          "IsWarn": false,
+          "MaxIntensityD": {
+            "From": 5,
+            "To": -3,
+            "Max": 5
+          },
+          "MaxIntensityLgD": {
+            "From": -9,
+            "To": -9,
+            "Max": -9
+          },
+          "IntensityAreas": [
+            {
+              "MaxIntensityD": {
+                "From": 5,
+                "To": -3,
+                "Max": 5
+              },
+              "AreaNames": [
+                "岩手県内陸北部"
+              ],
+              "AreaCodes": [
+                212
+              ]
+            },
+            {
+              "MaxIntensityD": {
+                "From": 4,
+                "To": -3,
+                "Max": 4
+              },
+              "AreaNames": [
+                "宮城県北部",
+                "宮城県中部",
+                "岩手県内陸南部",
+                "秋田県内陸南部"
+              ],
+              "AreaCodes": [
+                220,
+                222,
+                213,
+                233
+              ]
+            }
+          ],
+          "IntensityLgAreas": []
+        }
+      ]
+    }
+  ]
+}

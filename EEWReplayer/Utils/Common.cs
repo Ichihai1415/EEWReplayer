@@ -93,7 +93,7 @@ namespace EEWReplayer.Utils
                     else if (From == Intensity.None)
                         return "震度なし";
                     else if (From == Intensity.Null)
-                        return "(震度情報なし)";
+                        return "---";
                     else
                         throw new NotImplementedException("実装すべきですが実装されていないようです。");
                 }

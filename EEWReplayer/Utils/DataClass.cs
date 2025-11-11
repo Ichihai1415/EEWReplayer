@@ -1,4 +1,5 @@
 ﻿using static EEWReplayer.Utils.Common;
+using static EEWReplayer.Utils.Common.DetailedIntensity;
 
 namespace EEWReplayer.Utils
 {
@@ -409,6 +410,17 @@ namespace EEWReplayer.Utils
                     /// </summary>
                     /// <returns>コピーされたインスタンス</returns>
                     public IntensityArea DeepCopy() => new(this);
+
+
+                    public override string ToString()
+                    {
+                        return MaxIntensityD.ToString() + " " + string.Join('，', AreaNames);
+                    }
+
+                    public string ToString(ToStringPattern mode, string separator, char areaNameSeparator)
+                    {
+                        return MaxIntensityD.ToString(mode) + separator + string.Join(areaNameSeparator, AreaNames);
+                    }
                 }
 
                 /// <summary>

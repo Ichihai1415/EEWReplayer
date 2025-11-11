@@ -32,7 +32,7 @@ namespace EEWReplayer.Devs
 
         private static async void GetAllEEW()
         {
-            //Directory.CreateDirectory("Test");
+            Directory.CreateDirectory("Test");
 
             //var d_new = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/pub_hist/2024/01/20240101161010/fc/index.html");
             //File.WriteAllText("Test\\d_new.json", JsonSerializer.Serialize(d_new,options));
@@ -40,6 +40,11 @@ namespace EEWReplayer.Devs
             //File.WriteAllText("Test\\d_old.json", JsonSerializer.Serialize(d_old,options));
             //var d_s0 = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/pub_hist/2009/08/20090825063712/content/content_out.html");
             //File.WriteAllText("Test\\d_s0.json", JsonSerializer.Serialize(d_s0, options));
+
+            //var d_sa1 = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/11/20251109170343/index.html");
+            //File.WriteAllText("Test\\d_sa1.json", JsonSerializer.Serialize(d_sa1, Form1.options));
+            //var d_sa2 = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/fc_hist/2025/11/20251109170446/index.html");
+            //File.WriteAllText("Test\\d_sa2.json", JsonSerializer.Serialize(d_sa2, Form1.options));
 
 
             //var d = await GetData.GetDetail("https://www.data.jma.go.jp/eew/data/nc/pub_hist/2008/06/20080614084350/content/content_out.html");
@@ -192,7 +197,7 @@ namespace EEWReplayer.Devs
 
         private static void DataMerger()
         {
-            string mdir = "data-merge\\a";
+            string mdir = "data-merge\\sa";
             var jsonFiles = Directory.EnumerateFiles(mdir, "*.json", SearchOption.AllDirectories);
             var datas = new List<Data>();
             foreach (string filePath in jsonFiles)
