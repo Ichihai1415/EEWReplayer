@@ -85,14 +85,24 @@ namespace EEWReplayer
             var dir = "output\\" + DateTime.Now.ToString("yyyyMMddHHmmss");
             Directory.CreateDirectory(dir);
 
-            var d = JsonSerializer.Deserialize<Data>(Resources.jma_xml_20251105095956, Form1.options);
+            //var d = JsonSerializer.Deserialize<Data>(Resources.jma_xml_20251105095956, Form1.options);
+            //var config = new DrawConfig()
+            //{
+            //    StartTime = new DateTime(2025, 11, 05, 09, 59, 58),
+            //    EndTime = new DateTime(2025, 11, 05, 10, 02, 00),
+            //    DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
+            //    Size = new(1080)
+            //};
+
+            var d = JsonSerializer.Deserialize<Data>(Resources._20240101161010, Form1.options);
             var config = new DrawConfig()
             {
-                StartTime = new DateTime(2025, 11, 05, 09, 59, 58),
-                EndTime = new DateTime(2025, 11, 05, 10, 02, 00),
-                DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
+                StartTime = new DateTime(2024, 01, 01, 16, 10, 00),
+                EndTime = new DateTime(2024, 01, 01, 16, 13, 00),
+                DrawSpan = new TimeSpan(0, 0, 0, 1, 000),
                 Size = new(1080)
             };
+
             var dClone = d!.DeepCopy();
             var c = 1;
             for (var drawTime = config.StartTime; drawTime < config.EndTime; drawTime = drawTime.AddMilliseconds(config.DrawSpan.TotalMilliseconds))//ms単位で正確に足し算

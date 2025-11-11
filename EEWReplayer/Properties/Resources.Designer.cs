@@ -61,6 +61,26 @@ namespace EEWReplayer.Properties {
         }
         
         /// <summary>
+        ///   {
+        ///  &quot;Version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;Created&quot;: &quot;2025-11-08T12:04:28.4678205+09:00&quot;,
+        ///  &quot;Description&quot;: &quot;気象庁ホームページ(緊急地震速報(予報)の内容)より生成。通常は暫定値ですが、新しく未更新の場合は速報値となります。各報での震央名、発生時刻は実際の地震(複数ある場合は通常一番大きなもの)の値となり、震央名にはかっこがつきます。詳細: https://www.data.jma.go.jp/eew/data/nc/pub_hist/2024/01/20240101161010/fc/index.html&quot;,
+        ///  &quot;Earthquakes&quot;: [
+        ///    {
+        ///      &quot;ID&quot;: &quot;20240101161010&quot;,
+        ///      &quot;Source&quot;: &quot;JMA-EEW-HIST&quot;,
+        ///      &quot;OriginTime&quot;: &quot;2024-01-01T16:10:22.5&quot;,
+        ///      &quot;HypoName&quot;: &quot;石川県能登地方&quot;,
+        ///      &quot;HypoLat&quot;: 37.495,
+        ///      &quot;HypoLon&quot;: 1 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string _20240101161010 {
+            get {
+                return ResourceManager.GetString("_20240101161010", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   {&quot;type&quot;:&quot;FeatureCollection&quot;, &quot;features&quot;: [
         ///{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[141.49062527873366,43.68444110807076],[141.46871167290544,43.70077944061876],[141.4173361086746,43.711196946182156],[141.4049841631886,43.73778610844221],[141.37127333259832,43.72762055874182],[141.3374300003943,43.73749444121552],[141.33107277558815,43.70759666685274],[141.34945888511947,43.66745444076986],[141.35221555090698,43.64120250539139],[141.3655327756171,43.617426667107054],[141.3827990529340 [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
