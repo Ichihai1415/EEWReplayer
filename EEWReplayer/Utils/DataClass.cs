@@ -414,7 +414,7 @@ namespace EEWReplayer.Utils
 
                     public override string ToString()
                     {
-                        return MaxIntensityD.ToString() + " " + string.Join('，', AreaNames);
+                        return "【" + MaxIntensityD.ToString() + "】" + string.Join('、', AreaNames);
                     }
 
                     public string ToString(ToStringPattern mode, string separator, char areaNameSeparator)

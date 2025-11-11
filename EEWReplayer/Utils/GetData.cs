@@ -116,7 +116,7 @@ namespace EEWReplayer.Utils
                         var intArea = intAreas[serialLast][i];
                         if (intArea.MaxIntensityD == intLast)
                         {
-                            intAreas[serialLast][i].AreaNames = [.. intAreas[serialLast][i].AreaNames.Concat(areas.Split('，'))];
+                            intAreas[serialLast][i].AreaNames = [.. intAreas[serialLast][i].AreaNames.Concat(areas.Split('、'))];
                             break;
                         }
                     }

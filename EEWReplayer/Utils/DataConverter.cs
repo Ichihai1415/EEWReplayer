@@ -220,7 +220,7 @@ namespace EEWReplayer.Utils
         /// <summary>
         /// 気象庁防災情報XML震度文字列をDetailedIntensityに変換します。
         /// </summary>
-        /// <remarks><see cref="DetailedIntensity.Max"/>に格納され，<see cref="DetailedIntensity.From"/>, <see cref="DetailedIntensity.To"/>は<see cref="Intensity.Null"/>となります。</remarks>
+        /// <remarks><see cref="DetailedIntensity.Max"/>に格納され、<see cref="DetailedIntensity.From"/>, <see cref="DetailedIntensity.To"/>は<see cref="Intensity.Null"/>となります。</remarks>
         /// <param name="intensity"></param>
         /// <returns></returns>
         public static DetailedIntensity IntensityD_JMAxmlString2Enum(string intensity) => new(Intensity_JMAxmlString2Enum(intensity));
