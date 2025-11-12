@@ -22,7 +22,12 @@ namespace EEWReplayer
             //    StartTime = new DateTime(2025, 11, 05, 09, 59, 58),
             //    EndTime = new DateTime(2025, 11, 05, 10, 02, 00),
             //    DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
-            //    Size = new(1080)
+            //    Size = new(1080),
+            //    LatSta = 20,
+            //    LatEnd = 50,
+            //    LonSta = 120,
+            //    LonEnd = 150,
+            //    Colors = new()
             //};
 
             //var d = JsonSerializer.Deserialize<Data>(Resources._20240101161010, Form1.options);
@@ -31,7 +36,12 @@ namespace EEWReplayer
             //    StartTime = new DateTime(2024, 01, 01, 16, 10, 00),
             //    EndTime = new DateTime(2024, 01, 01, 16, 14, 00),
             //    DrawSpan = new TimeSpan(0, 0, 0, 1, 000),
-            //    Size = new(1080)
+            //    Size = new(1080),
+            //    LatSta = 20,
+            //    LatEnd = 50,
+            //    LonSta = 120,
+            //    LonEnd = 150,
+            //    Colors = new()
             //};
 
             //var d = JsonSerializer.Deserialize<Data>(Resources.jma_hist_20251109170343, Form1.options);
@@ -40,7 +50,12 @@ namespace EEWReplayer
             //    StartTime = new DateTime(2025, 11, 9, 17, 3, 40),
             //    EndTime = new DateTime(2025, 11, 9, 17, 6, 00),
             //    DrawSpan = new TimeSpan(0, 0, 0, 1, 000),
-            //    Size = new(1080)
+            //    Size = new(1080),
+            //    LatSta = 30,
+            //    LatEnd = 50,
+            //    LonSta = 130,
+            //    LonEnd = 150,
+            //    Colors = new()
             //};
 
             var d = JsonSerializer.Deserialize<Data>(Resources._20240603063142, Form1.options);
@@ -49,9 +64,13 @@ namespace EEWReplayer
                 StartTime = new DateTime(2024, 6, 3, 6, 31, 40),
                 EndTime = new DateTime(2024, 6, 3, 6, 32, 0),
                 DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
-                Size = new(1080)
+                Size = new(1080),
+                LatSta = 33,
+                LatEnd = 43,
+                LonSta = 132,
+                LonEnd = 142,
+                Colors = new()
             };
-
 
         rd:
 
@@ -135,17 +154,10 @@ namespace EEWReplayer
                     }
                 }
 
-                //DrawMap(g, colorConfig.ToDictionary(kv => kv.Key, kv => IntN2Brush(kv.Value)));
-                //DrawPSWave(g, d.Earthquakes, drawTime, 2);
-                //DrawPSWave(g, [.. drawEEWList], drawTime, 1);
-
-                //DrawMap(g, colorConfig.ToDictionary(kv => kv.Key, kv => IntN2Brush(kv.Value)), 30, 50, 130, 150);
-                //DrawPSWave(g, d.Earthquakes, drawTime, 2, 30, 50, 130, 150);
-                //DrawPSWave(g, [.. drawEEWList], drawTime, 1, 30, 50, 130, 150);
-
-                DrawMap(g, colorConfig.ToDictionary(kv => kv.Key, kv => IntN2Brush(kv.Value)), 33, 43, 132, 142);
-                DrawPSWave(g, d.Earthquakes, drawTime, 2, 33, 43, 132, 142);
-                DrawPSWave(g, [.. drawEEWList], drawTime, 1, 33, 43, 132, 142);
+                config.Colors.FillColors = colorConfig.ToDictionary(kv => kv.Key, kv => IntN2Brush(kv.Value));
+                DrawMap(g, config);
+                DrawPSWave(g, d.Earthquakes, config, drawTime, 2);
+                DrawPSWave(g, drawEEWList, config, drawTime, 1);
 
                 g.FillRectangle(Brushes.Black, 1080, 0, 1920 - 1080, 1080);
 
@@ -197,98 +209,101 @@ namespace EEWReplayer
         {
             if (mapData == null)
                 throw new Exception("地図データが読み込まれていません。");
+            var color = config.Colors.DeepCopy() ?? new();
+            if (color.FillColors.Count == 0)
+                Console.WriteLine("塗り替え配色データがありません。");
             //var bitmap = new Bitmap(1920, 1080);
             //using var g = Graphics.FromImage(bitmap);
             //g.Clear(Color.FromArgb(20, 40, 60));
             using var gp = new GraphicsPath();
 
-
-
-
-
             foreach (var feature in mapData.Features)
             {
                 if (feature.Geometry == null)
-                    continue;
+                    continue;/*
                 if (feature.Geometry.Type == "Polygon")
                 {
                     gp.StartFigure();
-                    var points = feature.Geometry.Coordinates.Objects[0].MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * zoom, (config.LatEnd - coordinate.Lat) * zoom));
+                    var points = feature.Geometry.Coordinates.Objects[0].MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * (float)config.Zoom, (config.LatEnd - coordinate.Lat) * (float)config.Zoom));
                     if (points.Count() > 2)
                     {
                         gp.AddPolygon(points.ToArray());
-                        if (colorConfig.TryGetValue(int.Parse((feature.Properties?.GetCode() == "" ? "-1" : feature.Properties?.GetCode()) ?? "-1"), out var brush))
+                        if (color.FillColors.TryGetValue(int.Parse((feature.Properties?.GetCode() == "" ? "-1" : feature.Properties?.GetCode()) ?? "-1"), out var brush))
                             g.FillPolygon(brush, points.ToArray());
-                        else if (colorConfig.TryGetValue(-1, out SolidBrush? value))
-                            g.FillPolygon(value, points.ToArray());
                         else
-                            g.FillPolygon(new SolidBrush(Color.FromArgb(100, 100, 150)), points.ToArray());
+                            g.FillPolygon(config.Colors.DefaultFillColor, points.ToArray());
                     }
                 }
                 else
-                {
+                {*/
 
-                    foreach (var singleObject in feature.Geometry.Coordinates.Objects)
+                foreach (var singleObject in feature.Geometry.Coordinates.Objects)
+                {
+                    gp.StartFigure();
+                    var points = singleObject.MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * (float)config.Zoom, (config.LatEnd - coordinate.Lat) * (float)config.Zoom));
+                    if (points.Count() > 2)
                     {
-                        gp.StartFigure();
-                        var points = singleObject.MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * zoom, (config.LatEnd - coordinate.Lat) * zoom));
-                        if (points.Count() > 2)
-                        {
-                            gp.AddPolygon(points.ToArray());
-                            if (colorConfig.TryGetValue(int.Parse(feature.Properties?.GetCode() ?? "-1"), out var brush))
-                                g.FillPolygon(brush, points.ToArray());
-                            else if (colorConfig.TryGetValue(-1, out SolidBrush? value))
-                                g.FillPolygon(value, points.ToArray());
-                            else
-                                g.FillPolygon(new SolidBrush(Color.FromArgb(100, 100, 150)), points.ToArray());
-                        }
+                        gp.AddPolygon(points.ToArray());
+                        if (color.FillColors.TryGetValue(int.Parse(feature.Properties?.GetCode() == "" ? "-1" : feature.Properties?.GetCode() ?? "-1"), out var brush))
+                            g.FillPolygon(brush, points.ToArray());
+                        else
+                            g.FillPolygon(color.DefaultFillColor, points.ToArray());
                     }
                 }
+                //}
             }
-            var lineWidth = Math.Max(1f, zoom / 216f);
+            var lineWidth = Math.Max(1f, (float)config.Zoom / 216f);
             //g.FillPath(new SolidBrush(Color.FromArgb(100, 100, 150)), gp);
 
-            //g.DrawPath(new Pen(Color.FromArgb(255, 200, 200, 200), lineWidth) { LineJoin = LineJoin.Round }, gp);//zoom > 200 ? 2 : 1
-            g.DrawPath(new Pen(Color.Black, lineWidth) { LineJoin = LineJoin.Round }, gp);//zoom > 200 ? 2 : 1
-
-            //g.FillRectangle(Brushes.Black, 1080, 0, 1920 - 1080, 1080);
+            g.DrawPath(new Pen(color.LineColor, lineWidth) { LineJoin = LineJoin.Round }, gp);//zoom > 200 ? 2 : 1
         }
 
         private static readonly PSDistances psd = new();
 
-        public static void DrawPSWave(Graphics g, Data.EEWList[] eewLists, DateTime drawTime, int color, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
+        public static void DrawPSWave(Graphics g, Data.EEWList[] eewLists, DrawConfig config, DateTime drawTime, int color)
         {
-            foreach (var eewList in eewLists)
-            {
-                DrawPSWave(g, eewList.EEWs[0], drawTime, color, latSta, latEnd, lonSta, lonEnd);
-            }
+            foreach (var eewList in eewLists) DrawPSWave(g, eewList.EEWs[0], config, drawTime, color);
         }
 
-        public static void DrawPSWave(Graphics g, Data.EEWList.EEW eew, DateTime drawTime, int color, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
+        public static void DrawPSWave(Graphics g, List<Data.EEWList> eewLists, DrawConfig config, DateTime drawTime, int color)
         {
-            var zoom = 1080f / (latEnd - latSta);
+            foreach (var eewList in eewLists) DrawPSWave(g, eewList.EEWs[0], config, drawTime, color);
+        }
 
-            var seconds = (drawTime - eew.OriginTime).TotalSeconds;
+        public static void DrawPSWave(Graphics g, Data.EEWList.EEW eew, DrawConfig config, DateTime drawTime, int color)
+        {
+            DrawPSWave(g, eew.OriginTime, eew.HypoLat, eew.HypoLon, eew.HypoDepth, config, drawTime, color, eew.Magnitude == 1 || !double.IsNormal(eew.Magnitude));
+        }
+
+        public static void DrawPSWave(Graphics g, Data.Earthquake[] eqs, DrawConfig config, DateTime drawTime, int color)
+        {
+            foreach (var eq in eqs) DrawPSWave(g, eq, config, drawTime, color);
+        }
+
+        public static void DrawPSWave(Graphics g, Data.Earthquake eq, DrawConfig config, DateTime drawTime, int color)
+        {
+            DrawPSWave(g, eq.OriginTime, eq.HypoLat, eq.HypoLon, eq.HypoDepth, config, drawTime, color);
+        }
+
+        public static void DrawPSWave(Graphics g, DateTime originTime, double hypoLat, double hypoLon, double hypoDepth, DrawConfig config, DateTime drawTime, int color, bool isCircle = false)
+        {
+            var seconds = (drawTime - originTime).TotalSeconds;
 
             if (seconds > 0)
-            {
-
-                if (eew.Magnitude == 1 || !double.IsNormal(eew.Magnitude))
+                if (isCircle)
                 {
-
                     //震央
                     var hypoLength = 20;
-                    var hypoPt = new PointF(((float)eew.HypoLon - lonSta) * zoom, (latEnd - (float)eew.HypoLat) * zoom);
-
+                    var hypoPt = new PointF(((float)hypoLon - config.LonSta) * config.Zoom, (config.LatEnd - (float)hypoLat) * config.Zoom);
                     g.DrawEllipse(new Pen(Color.Red, 6), hypoPt.X - hypoLength, hypoPt.Y - hypoLength, hypoLength * 2, hypoLength * 2);
                 }
                 else
                 {
-                    var (pLatLon, sLatLon) = psd!.GetLatLonList(eew.HypoDepth, seconds, eew.HypoLat, eew.HypoLon, 45);
+                    var (pLatLon, sLatLon) = psd!.GetLatLonList(hypoDepth, seconds, hypoLat, hypoLon, 45);
                     if (pLatLon.Count > 2)//基本45、失敗時0か1
                     {
-                        var pPts = pLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
-                        pPts.Add(pPts[0]);
+                        var pPts = pLatLon.Select(x => new PointF(((float)x.Lon - config.LonSta) * config.Zoom, (config.LatEnd - (float)x.Lat) * config.Zoom));
+                        pPts = pPts.Append(pPts.First());
                         if (color == 1)
                             g.DrawPolygon(new Pen(Color.FromArgb(64, 64, 255), 2), pPts.ToArray());
                         else if (color == 2)
@@ -297,8 +312,8 @@ namespace EEWReplayer
                     }
                     if (sLatLon.Count > 2)
                     {
-                        var sPts = sLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
-                        sPts.Add(sPts[0]);
+                        var sPts = sLatLon.Select(x => new PointF(((float)x.Lon - config.LonSta) * config.Zoom, (config.LatEnd - (float)x.Lat) * config.Zoom));
+                        sPts = sPts.Append(sPts.First());
                         if (color == 1)
                         {
                             g.DrawPolygon(new Pen(Color.Red, 2), sPts.ToArray());
@@ -310,65 +325,13 @@ namespace EEWReplayer
                             g.FillPolygon(new SolidBrush(Color.FromArgb(64, 255, 165, 0)), sPts.ToArray());
                         }
                     }
-
                     //震央
                     var hypoLength = 20;
-                    var hypoPt = new PointF(((float)eew.HypoLon - lonSta) * zoom, (latEnd - (float)eew.HypoLat) * zoom);
+                    var hypoPt = new PointF(((float)hypoLon - config.LonSta) * config.Zoom, (config.LatEnd - (float)hypoLat) * config.Zoom);
                     g.DrawLine(new Pen(Color.Red, 6), hypoPt.X - hypoLength, hypoPt.Y - hypoLength, hypoPt.X + hypoLength, hypoPt.Y + hypoLength);
                     g.DrawLine(new Pen(Color.Red, 6), hypoPt.X + hypoLength, hypoPt.Y - hypoLength, hypoPt.X - hypoLength, hypoPt.Y + hypoLength);
                 }
-            }
         }
-
-        public static void DrawPSWave(Graphics g, Data.Earthquake[] eqs, DateTime drawTime, int color, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
-        {
-            var zoom = 1080f / (latEnd - latSta);
-            foreach (var eq in eqs)
-            {
-
-                var seconds = (drawTime - eq.OriginTime).TotalSeconds;
-
-                if (seconds > 0)
-                {
-
-                    var (pLatLon, sLatLon) = psd!.GetLatLonList(eq.HypoDepth, seconds, eq.HypoLat, eq.HypoLon, 45);
-                    if (pLatLon.Count > 2)//基本45、失敗時0か1
-                    {
-                        var pPts = pLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
-                        pPts.Add(pPts[0]);
-                        if (color == 1)
-                            g.DrawPolygon(new Pen(Color.FromArgb(64, 64, 255), 2), pPts.ToArray());
-                        else if (color == 2)
-                            g.DrawPolygon(new Pen(Color.FromArgb(64, 64, 128), 2), pPts.ToArray());
-
-                    }
-                    if (sLatLon.Count > 2)
-                    {
-                        var sPts = sLatLon.Select(x => new PointF(((float)x.Lon - lonSta) * zoom, (latEnd - (float)x.Lat) * zoom)).ToList()!;
-                        sPts.Add(sPts[0]);
-                        if (color == 1)
-                        {
-                            g.DrawPolygon(new Pen(Color.Red, 2), sPts.ToArray());
-                            g.FillPolygon(new SolidBrush(Color.FromArgb(64, 255, 0, 0)), sPts.ToArray());
-                        }
-                        else if (color == 2)
-                        {
-                            g.DrawPolygon(new Pen(Color.Orange, 2), sPts.ToArray());
-                            g.FillPolygon(new SolidBrush(Color.FromArgb(64, 255, 165, 0)), sPts.ToArray());
-                        }
-                    }
-
-                    //震央
-                    var hypoLength = 20;
-                    var hypoPt = new PointF(((float)eq.HypoLon - lonSta) * zoom, (latEnd - (float)eq.HypoLat) * zoom);
-
-                    g.DrawLine(new Pen(Color.OrangeRed, 6), hypoPt.X - hypoLength, hypoPt.Y - hypoLength, hypoPt.X + hypoLength, hypoPt.Y + hypoLength);
-                    g.DrawLine(new Pen(Color.OrangeRed, 6), hypoPt.X + hypoLength, hypoPt.Y - hypoLength, hypoPt.X - hypoLength, hypoPt.Y + hypoLength);
-                }
-
-            }
-        }
-
 
         /// <summary>
         /// 画像描画用に緯度・経度を補正します

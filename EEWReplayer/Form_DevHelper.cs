@@ -168,6 +168,24 @@ namespace EEWReplayer.Devs
         public const string DIR = "datas";
         private static async Task StatisticsMaker()
         {
+            var drawConfig = new DrawConfig()
+            {
+                LatSta = 20,
+                LatEnd = 50,
+                LonSta = 120,
+                LonEnd = 150,
+                Size = new(1000, 1000),
+                Colors = new()
+                {
+                    //LineColor = Color.Black,
+                    //BackgroundColor = Color.White,
+                    //DefaultFillColor = new SolidBrush(Color.White)
+
+                    LineColor = Color.White,
+                    BackgroundColor = Color.Black,
+                    DefaultFillColor = new SolidBrush(Color.Black)
+                }
+            };
             var jsonFiles = Directory.EnumerateFiles(DIR, "*.json", SearchOption.AllDirectories);
             var datas = new List<Data>();
             var codeCounter = new Dictionary<int, int>();
@@ -207,14 +225,12 @@ namespace EEWReplayer.Devs
 
             //var c = codeCounter.ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb(x.Value * 2, 255, 0, 0)));
             var c = codeCounter.Where(x => x.Value > 0).ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb((int)(Math.Log10(x.Value) * (255d / Math.Log10(codeCounter.Values.Max()))), 255, 0, 0)));
-
-            c.Add(-1, new SolidBrush(Color.White));
+            drawConfig.Colors.FillColors = c;
             Console.WriteLine("描画中");
-            var img = new Bitmap(1000, 1000);
+            var img = new Bitmap(drawConfig.Size.Width, drawConfig.Size.Height);
             using var g = Graphics.FromImage(img);
-            g.Clear(Color.White);
-            Draw.DrawMap(g, new Dictionary<int, SolidBrush>() { { -1, new SolidBrush(Color.White) } });
-            Draw.DrawMap(g, c);
+            g.Clear(drawConfig.Colors.BackgroundColor);
+            Draw.DrawMap(g, drawConfig);
             img.Save("warns.png", ImageFormat.Png);
             Form1.fd.ChangeImage(img);
 

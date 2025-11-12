@@ -566,9 +566,11 @@ namespace EEWReplayer.Utils
 
     public class DrawConfig
     {
-        public required DateTime StartTime { get; init; }
-        public required DateTime EndTime { get; init; }
-        public required TimeSpan DrawSpan { get; init; }
+        public DrawConfig() { }
+
+        public DateTime StartTime { get; init; } = DateTime.MinValue;
+        public DateTime EndTime { get; init; } = DateTime.MinValue;
+        public TimeSpan DrawSpan { get; init; } = TimeSpan.MinValue;
 
         public required C_Size Size { get; init; }
 
@@ -577,32 +579,61 @@ namespace EEWReplayer.Utils
         public required float LonSta { get; init; }
         public required float LonEnd { get; init; }
         //いるかわからないが再計算回避策
-        private double _zoom = -1;
-        public double Zoom
+        private float _zoom = -1;
+        public float Zoom
         {
             get
             {
                 if (_zoom == -1)
-                    _zoom = (double)Size.Height / (LatEnd - LatSta);
+                    _zoom = Size.Height / (LatEnd - LatSta);
                 return _zoom;
             }
         }
 
-        private (double zw, double zh) _zoomWH = (-1, -1);
-        public (double zw, double zh) ZoomWH
+        private (float zw, float zh) _zoomWH = (-1, -1);
+        public (float zw, float zh) ZoomWH
         {
             get
             {
                 if (_zoomWH.zw == -1)
-                    _zoomWH = ((double)Size.Width / (LonEnd - LonSta), (double)Size.Height / (LatEnd - LatSta));
+                    _zoomWH = (Size.Width / (LonEnd - LonSta), Size.Height / (LatEnd - LatSta));
                 return _zoomWH;
             }
         }
 
         public Size GetDrawSize() => Size.ToDrawingSize();
 
-        public C_Colors? Colors { get; set; }
+        public required C_Colors Colors { get; set; }
 
+
+        public DrawConfig DeepCopy() => new()
+        {
+            StartTime = StartTime,
+            EndTime = EndTime,
+            DrawSpan = DrawSpan,
+            Size = Size.DeepCopy(),
+            LatSta = LatSta,
+            LatEnd = LatEnd,
+            LonSta = LonSta,
+            LonEnd = LonEnd,
+            _zoom = _zoom,
+            _zoomWH = _zoomWH,
+            Colors = Colors.DeepCopy()
+        };
+        public DrawConfig DeepCopyWithoutColor(C_Colors color) => new()
+        {
+            StartTime = StartTime,
+            EndTime = EndTime,
+            DrawSpan = DrawSpan,
+            Size = Size.DeepCopy(),
+            LatSta = LatSta,
+            LatEnd = LatEnd,
+            LonSta = LonSta,
+            LonEnd = LonEnd,
+            _zoom = _zoom,
+            _zoomWH = _zoomWH,
+            Colors = color
+        };
 
         public class C_Size
         {
@@ -631,16 +662,26 @@ namespace EEWReplayer.Utils
             public int Height { get; }
 
             public Size ToDrawingSize() => new(Width, Height);
+
+            public C_Size DeepCopy() => new(Width, Height);
         }
         public class C_Colors
         {
             public Color LineColor { get; init; } = Color.White;
 
-            public SolidBrush BackgroundColor { get; init; } = new(Color.FromArgb(20, 40, 60));
+            public Color BackgroundColor { get; init; } = Color.FromArgb(20, 40, 60);
 
             public SolidBrush DefaultFillColor { get; init; } = new(Color.FromArgb(100, 100, 150));
 
-            public Dictionary<int, SolidBrush> FillColors { get; init; } = [];
+            public Dictionary<int, SolidBrush> FillColors { get; set; } = [];
+
+            public C_Colors DeepCopy() => new()
+            {
+                LineColor = LineColor,
+                BackgroundColor = BackgroundColor,
+                DefaultFillColor = DefaultFillColor,
+                FillColors = FillColors.ToDictionary(x => x.Key, x => x.Value)//SolidBrushのDeepCopy怪しいけど保留
+            };
         }
     }
 }
