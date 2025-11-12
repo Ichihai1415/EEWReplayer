@@ -5,7 +5,7 @@ namespace EEWReplayer
 {
     public partial class Form2_progress : Form
     {
-        public Form2_progress(double opacity = 0.5)
+        public Form2_progress(double opacity = 0.5 * 2)
         {
             InitializeComponent();
             Opacity = opacity;
@@ -62,6 +62,8 @@ namespace EEWReplayer
         private void DisplayText_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             TB_log.Text = displayText.Text.Replace("\n", "\r\n");
+            TB_log.SelectionStart = TB_log.Text.Length;
+            TB_log.ScrollToCaret();
         }
 
         private void TSMI_CopyToClipboard_Click(object sender, EventArgs e)

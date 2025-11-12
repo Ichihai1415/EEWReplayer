@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Html.Parser;
 using EEWReplayer.Utils;
+using System.Drawing.Imaging;
 using System.Text.Json;
 using System.Xml.Serialization;
 using static EEWReplayer.Utils.Common;
@@ -17,12 +18,12 @@ namespace EEWReplayer.Devs
 
         private async void Form_DevHelper_Load(object sender, EventArgs e)
         {
-            //GetAllEEW();
+            await GetAllEEW();
             //JMAXML2OriginalJSON();
-            //StatisticsMaker();
+            await StatisticsMaker();
             //DataMerger();
 
-            await Draw.DrawFlowEx();
+            //await Draw.DrawFlowEx();
         }
 
         internal void ChangeImage(Image img)
@@ -30,7 +31,7 @@ namespace EEWReplayer.Devs
             Img.Image = img;
         }
 
-        private static async void GetAllEEW()
+        private static async Task GetAllEEW()
         {
             Directory.CreateDirectory("Test");
 
@@ -67,17 +68,21 @@ namespace EEWReplayer.Devs
 
             var eqTables = document.QuerySelectorAll("table[id='event_list']");
             var eqRows = eqTables.Select(x => x.QuerySelectorAll("tr").Skip(1).ToArray());
-            var detailURLs = new List<string>();
+            //var detailURLs = new List<string>();
+            Directory.CreateDirectory("datas");
             foreach (var eqRow in eqRows.SelectMany(x => x))
             {
                 var eqCells = eqRow.QuerySelectorAll("td");
                 var detailUrl = eqCells[4].QuerySelector("a")?.GetAttribute("href")!.Replace("./", "https://www.data.jma.go.jp/eew/data/nc/pub_hist/").Replace("reachtime/reachtime.html", "fc/index.html")!;
-                detailURLs.Add(detailUrl);
+                if (File.Exists("datas\\" + detailUrl.Split('/')[9] + ".json"))
+                    continue;
+                //detailURLs.Add(detailUrl);
                 Form1.f2.AddLine(eqCells[0].TextContent + "　" + detailUrl);
                 var data = await GetData.GetDetail(detailUrl);
-                Directory.CreateDirectory("datas");
                 File.WriteAllText("datas\\" + detailUrl.Split('/')[9] + ".json", JsonSerializer.Serialize(data, Form1.options));
+                await Task.Delay(1);
             }
+            Console.WriteLine("取得終了");
         }
 
 
@@ -161,7 +166,7 @@ namespace EEWReplayer.Devs
 
 
         public const string DIR = "datas";
-        private static void StatisticsMaker()
+        private static async Task StatisticsMaker()
         {
             var jsonFiles = Directory.EnumerateFiles(DIR, "*.json", SearchOption.AllDirectories);
             var datas = new List<Data>();
@@ -177,21 +182,41 @@ namespace EEWReplayer.Devs
                 //var (warnAreas, warnCodes) = warnLastEEW.GetWarningAreas();
                 var a = json.EEWLists[0].GetAllWarningAreas();
 
-                Form1.f2.AddLine(json.Earthquakes[0].OriginTime + " " + json.Earthquakes[0].HypoName + ((a.Length == 0) ? "" : "\n"));
-                foreach (var warnAreas in a)
-                    Form1.f2.AddLine(string.Join(' ', warnAreas.areaNames!) + "\n");
-                Form1.f2.AddLine("---");
+                //Form1.f2.AddLine(json.Earthquakes[0].OriginTime + " " + json.Earthquakes[0].HypoName + ((a.Length == 0) ? "" : "\n"));
+                foreach (var (areaNames, areaCodes) in a)
+                {
+                    if (areaNames.Length != areaCodes.Length)
+                        throw new Exception("名称とコードが不整合です");
+                    if (areaCodes.Contains(-1))
+                        throw new Exception("不正なコード（-1）があります");
+                    //Form1.f2.AddLine(string.Join(' ', areaNames!) + "\n");
+                }
+                //Form1.f2.AddLine("---");
                 foreach (var code in a[^1].areaCodes ?? [])
                     if (codeCounter.TryGetValue(code, out int value))
                         codeCounter[code] = ++value;
+                await Task.Delay(1);
             }
-            Console.WriteLine("Done");
-            Form1.f2.AddLine("warn: codes");
-            foreach (var kvp in codeCounter.OrderBy(x => x.Key))
-                Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
-            Form1.f2.AddLine("---\nwarn: codes");
-            foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
-                Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+            Console.WriteLine("読み込み完了");
+            //Form1.f2.AddLine("warn: codes");
+            //foreach (var kvp in codeCounter.OrderBy(x => x.Key))
+            //    Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+            //Form1.f2.AddLine("---\nwarn: codes");
+            //foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
+            //    Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+
+            //var c = codeCounter.ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb(x.Value * 2, 255, 0, 0)));
+            var c = codeCounter.Where(x => x.Value > 0).ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb((int)(Math.Log10(x.Value) * (255d / Math.Log10(codeCounter.Values.Max()))), 255, 0, 0)));
+
+            c.Add(-1, new SolidBrush(Color.White));
+            Console.WriteLine("描画中");
+            var img = new Bitmap(1000, 1000);
+            using var g = Graphics.FromImage(img);
+            g.Clear(Color.White);
+            Draw.DrawMap(g, new Dictionary<int, SolidBrush>() { { -1, new SolidBrush(Color.White) } });
+            Draw.DrawMap(g, c);
+            img.Save("warns.png", ImageFormat.Png);
+            Form1.fd.ChangeImage(img);
 
         }
 
