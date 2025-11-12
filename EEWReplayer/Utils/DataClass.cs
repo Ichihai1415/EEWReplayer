@@ -566,11 +566,15 @@ namespace EEWReplayer.Utils
 
     public class DrawConfig
     {
-        public DateTime StartTime { get; set; } = DateTime.MinValue;
-        public DateTime EndTime { get; set; } = DateTime.MinValue;
-        public TimeSpan DrawSpan { get; set; } = TimeSpan.Zero;
+        public required DateTime StartTime { get; set; }
+        public required DateTime EndTime { get; set; }
+        public required TimeSpan DrawSpan { get; set; }
 
-        public C_Size Size { get; set; } = new C_Size(0);
+        public required C_Size Size { get; set; }
+
+        public void GetDrawSize() => Size.ToDrawingSize();
+
+        public C_Colors Colors = new();
 
         public class C_Size
         {
@@ -585,10 +589,29 @@ namespace EEWReplayer.Utils
                 Height = height;
             }
 
-            public int Width { get; } = 0;
-            public int Height { get; } = 0;
+            public int Width { get; }
+            public int Height { get; }
+
+            public float LatSta { get; set; }
+            public float LonSta { get; set; }
+            public float LatEnd { get; set; }
+            public float LonEnd { get; set; }
+
+            public double Zoom { get => (double)Height / (LatEnd - LatSta); }
+
+            public (double zw, double zh) ZoomWH { get => ((double)Width / (LonEnd - LonSta), (double)Height / (LatEnd - LatSta)); }
 
             public Size ToDrawingSize() => new(Width, Height);
+        }
+        public class C_Colors
+        {
+            public Color LineColor { get; set; } = Color.White;
+
+            public SolidBrush BackgroundColor { get; set; } = new(Color.FromArgb(20, 40, 60));
+
+            public SolidBrush DefaultFillColor { get; set; } = new(Color.FromArgb(100, 100, 150));
+
+            public Dictionary<int, SolidBrush> FillColors { get; set; } = [];
         }
     }
 }
