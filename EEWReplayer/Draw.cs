@@ -193,12 +193,10 @@ namespace EEWReplayer
         }
         public static readonly GeoJSONScheme.GeoJSON_JMA_Map mapData = GeoJSONHelper.Deserialize<GeoJSONScheme.GeoJSON_JMA_Map>(Resources.AreaForecastLocalE_GIS_20240520_01)!;
 
-        public static void DrawMap(Graphics g, Dictionary<int, SolidBrush> colorConfig, float latSta = 20, float latEnd = 50, float lonSta = 120, float lonEnd = 150)
+        public static void DrawMap(Graphics g, DrawConfig config)
         {
             if (mapData == null)
                 throw new Exception("地図データが読み込まれていません。");
-            var zoom = 1080f / (latEnd - latSta);
-
             //var bitmap = new Bitmap(1920, 1080);
             //using var g = Graphics.FromImage(bitmap);
             //g.Clear(Color.FromArgb(20, 40, 60));
@@ -215,7 +213,7 @@ namespace EEWReplayer
                 if (feature.Geometry.Type == "Polygon")
                 {
                     gp.StartFigure();
-                    var points = feature.Geometry.Coordinates.Objects[0].MainPoints.Select(coordinate => new PointF((coordinate.Lon - lonSta) * zoom, (latEnd - coordinate.Lat) * zoom));
+                    var points = feature.Geometry.Coordinates.Objects[0].MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * zoom, (config.LatEnd - coordinate.Lat) * zoom));
                     if (points.Count() > 2)
                     {
                         gp.AddPolygon(points.ToArray());
@@ -233,7 +231,7 @@ namespace EEWReplayer
                     foreach (var singleObject in feature.Geometry.Coordinates.Objects)
                     {
                         gp.StartFigure();
-                        var points = singleObject.MainPoints.Select(coordinate => new PointF((coordinate.Lon - lonSta) * zoom, (latEnd - coordinate.Lat) * zoom));
+                        var points = singleObject.MainPoints.Select(coordinate => new PointF((coordinate.Lon - config.LonSta) * zoom, (config.LatEnd - coordinate.Lat) * zoom));
                         if (points.Count() > 2)
                         {
                             gp.AddPolygon(points.ToArray());

@@ -566,21 +566,59 @@ namespace EEWReplayer.Utils
 
     public class DrawConfig
     {
-        public required DateTime StartTime { get; set; }
-        public required DateTime EndTime { get; set; }
-        public required TimeSpan DrawSpan { get; set; }
+        public required DateTime StartTime { get; init; }
+        public required DateTime EndTime { get; init; }
+        public required TimeSpan DrawSpan { get; init; }
 
-        public required C_Size Size { get; set; }
+        public required C_Size Size { get; init; }
 
-        public void GetDrawSize() => Size.ToDrawingSize();
+        public required float LatSta { get; init; }
+        public required float LatEnd { get; init; }
+        public required float LonSta { get; init; }
+        public required float LonEnd { get; init; }
+        //いるかわからないが再計算回避策
+        private double _zoom = -1;
+        public double Zoom
+        {
+            get
+            {
+                if (_zoom == -1)
+                    _zoom = (double)Size.Height / (LatEnd - LatSta);
+                return _zoom;
+            }
+        }
 
-        public C_Colors Colors = new();
+        private (double zw, double zh) _zoomWH = (-1, -1);
+        public (double zw, double zh) ZoomWH
+        {
+            get
+            {
+                if (_zoomWH.zw == -1)
+                    _zoomWH = ((double)Size.Width / (LonEnd - LonSta), (double)Size.Height / (LatEnd - LatSta));
+                return _zoomWH;
+            }
+        }
+
+        public Size GetDrawSize() => Size.ToDrawingSize();
+
+        public C_Colors? Colors { get; set; }
+
 
         public class C_Size
         {
             public C_Size(int height)
             {
                 Width = height * 16 / 9;
+                Height = height;
+            }
+            public C_Size(int height, double ratio)
+            {
+                Width = (int)(height * ratio);
+                Height = height;
+            }
+            public C_Size(int height, (int rw, int rh) ratio)
+            {
+                Width = height * ratio.rw / ratio.rh;
                 Height = height;
             }
             public C_Size(int width, int height)
@@ -592,26 +630,17 @@ namespace EEWReplayer.Utils
             public int Width { get; }
             public int Height { get; }
 
-            public float LatSta { get; set; }
-            public float LonSta { get; set; }
-            public float LatEnd { get; set; }
-            public float LonEnd { get; set; }
-
-            public double Zoom { get => (double)Height / (LatEnd - LatSta); }
-
-            public (double zw, double zh) ZoomWH { get => ((double)Width / (LonEnd - LonSta), (double)Height / (LatEnd - LatSta)); }
-
             public Size ToDrawingSize() => new(Width, Height);
         }
         public class C_Colors
         {
-            public Color LineColor { get; set; } = Color.White;
+            public Color LineColor { get; init; } = Color.White;
 
-            public SolidBrush BackgroundColor { get; set; } = new(Color.FromArgb(20, 40, 60));
+            public SolidBrush BackgroundColor { get; init; } = new(Color.FromArgb(20, 40, 60));
 
-            public SolidBrush DefaultFillColor { get; set; } = new(Color.FromArgb(100, 100, 150));
+            public SolidBrush DefaultFillColor { get; init; } = new(Color.FromArgb(100, 100, 150));
 
-            public Dictionary<int, SolidBrush> FillColors { get; set; } = [];
+            public Dictionary<int, SolidBrush> FillColors { get; init; } = [];
         }
     }
 }
