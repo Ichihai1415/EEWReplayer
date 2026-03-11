@@ -32,7 +32,8 @@ namespace EEWReplayer
             //form_GetAllEEW.Show();
             //Form_StatisticsMaker form_StatisticsMaker = new();
             //form_StatisticsMaker.Show();
-            fd.Show();
+
+            //fd.Show();
 
             //f.displayText.Text += "\noob";
         }
