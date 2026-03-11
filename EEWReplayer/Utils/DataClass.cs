@@ -454,27 +454,27 @@ namespace EEWReplayer.Utils
             public EEWList DeepCopy() => new(this);
 
             /// <summary>
-            /// 警報発表毎の対象地域を取得します。
+            /// 警報発表毎の対象地域を取得します。全部の情報が入っているものにしてください（描画用にデータを1つにしたものではないように）。
             /// </summary>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
             public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas() => GetAllWarningAreas(int.MaxValue);
 
             /// <summary>
-            /// 警報発表毎の対象地域を取得します。
+            /// 警報発表毎の対象地域を取得します。全部の情報が入っているものにしてください（描画用にデータを1つにしたものではないように）。
             /// </summary>
             /// <param name="onlyNewArea">追加地域のみにするか</param>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
             public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas(bool onlyNewArea) => GetAllWarningAreas(int.MaxValue, onlyNewArea);
 
             /// <summary>
-            /// 警報発表毎の対象地域を取得します。
+            /// 警報発表毎の対象地域を取得します。全部の情報が入っているものにしてください（描画用にデータを1つにしたものではないように）。
             /// </summary>
             /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
             /// <returns>（警報地域名リスト、地域コードリスト）のリスト</returns>
             public (string[] areaNames, int[] areaCodes)[] GetAllWarningAreas(int endSerial) => GetAllWarningAreas(endSerial, false);
 
             /// <summary>
-            /// 警報発表毎の対象地域を取得します。
+            /// 警報発表毎の対象地域を取得します。全部の情報が入っているものにしてください（描画用にデータを1つにしたものではないように）。
             /// </summary>
             /// <param name="endSerial">予報報数の制限（n報までに発表されたものに）</param>
             /// <param name="onlyNewArea">追加地域のみにするか</param>
@@ -572,6 +572,11 @@ namespace EEWReplayer.Utils
         public DateTime EndTime { get; init; } = DateTime.MinValue;
         public TimeSpan DrawSpan { get; init; } = TimeSpan.MinValue;
 
+        /// <summary>
+        /// PS波描画を有効にするか。情報それぞれの発生時刻等のデータがない場合falseにすること。
+        /// </summary>
+        public bool EnableEEWWave { get; init; }
+
         public required C_Size Size { get; init; }
 
         public required float LatSta { get; init; }
@@ -611,6 +616,7 @@ namespace EEWReplayer.Utils
             StartTime = StartTime,
             EndTime = EndTime,
             DrawSpan = DrawSpan,
+            EnableEEWWave = EnableEEWWave,
             Size = Size.DeepCopy(),
             LatSta = LatSta,
             LatEnd = LatEnd,
@@ -625,6 +631,7 @@ namespace EEWReplayer.Utils
             StartTime = StartTime,
             EndTime = EndTime,
             DrawSpan = DrawSpan,
+            EnableEEWWave = EnableEEWWave,
             Size = Size.DeepCopy(),
             LatSta = LatSta,
             LatEnd = LatEnd,

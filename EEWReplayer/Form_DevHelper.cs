@@ -18,12 +18,12 @@ namespace EEWReplayer.Devs
 
         private async void Form_DevHelper_Load(object sender, EventArgs e)
         {
-            await GetAllEEW();
+            //await GetAllEEW();
             //JMAXML2OriginalJSON();
-            await StatisticsMaker();
+            //await StatisticsMaker();
             //DataMerger();
 
-            //await Draw.DrawFlowEx();
+            await Draw.DrawFlowEx();
         }
 
         internal void ChangeImage(Image img)
