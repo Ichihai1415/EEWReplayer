@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 #pragma warning disable CS8981 // 型名には、小文字の ASCII 文字のみが含まれています。このような名前は、プログラミング言語用に予約されている可能性があります。
 namespace JmaXmlViewer.Utilities
 {
-    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加  doubleをdoubleに    修正箇所は→のように //変更: 
+    public class XmlClass_XSD//namespaceとpragmaとこれは手動付加  floatをdoubleに    修正箇所は→のように //変更: 
     {
 
         /// <remarks/>
