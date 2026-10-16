@@ -171,7 +171,7 @@ namespace EEWReplayer
                 var colorConfig = new Dictionary<int, Intensity>();
                 foreach (var drawEEW in drawEEWList)
                 {
-                    foreach (var area in drawEEW.EEWs[0].IntensityLgAreas)//Lgでも
+                    foreach (var area in drawEEW.EEWs[0].IntensityAreas)//todo: Lgでも(IntensityLgAreas)
                     {
                         foreach (var code in area.AreaCodes)
                         {
