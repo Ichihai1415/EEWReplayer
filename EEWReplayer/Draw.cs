@@ -20,20 +20,20 @@ namespace EEWReplayer
                 Directory.CreateDirectory(dir);
 
 
-            var d = JsonSerializer.Deserialize<Data>(File.ReadAllText("datas\\20110311144640.json"), Form1.options);
-            var config = new DrawConfig()
-            {
-                StartTime = new DateTime(2011, 3, 11, 14, 46, 40),
-                EndTime = new DateTime(2011, 3, 11, 14, 48, 40),
-                DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
-                EnableEEWWave = false,
-                Size = new(1080),
-                LatSta = 33,
-                LatEnd = 43,
-                LonSta = 136f,
-                LonEnd = 146f,
-                Colors = new()
-            };
+            //var d = JsonSerializer.Deserialize<Data>(File.ReadAllText("datas\\20110311144640.json"), Form1.options);
+            //var config = new DrawConfig()
+            //{
+            //    StartTime = new DateTime(2011, 3, 11, 14, 46, 40),
+            //    EndTime = new DateTime(2011, 3, 11, 14, 48, 40),
+            //    DrawSpan = new TimeSpan(0, 0, 0, 0, 100),
+            //    EnableEEWWave = false,
+            //    Size = new(1080),
+            //    LatSta = 33,
+            //    LatEnd = 43,
+            //    LonSta = 136f,
+            //    LonEnd = 146f,
+            //    Colors = new()
+            //};
 
             //var d = JsonSerializer.Deserialize<Data>(Resources.jma_xml_20251105095956, Form1.options);
             //var config = new DrawConfig()
@@ -90,6 +90,21 @@ namespace EEWReplayer
             //    LonEnd = 142,
             //    Colors = new()
             //};
+
+            var d = JsonSerializer.Deserialize<Data>(File.ReadAllText("datas\\20261016123810.json"), Form1.options);
+            var config = new DrawConfig()
+            {
+                StartTime = new DateTime(2026, 10, 16, 12, 38, 00),
+                EndTime = new DateTime(2026, 10, 16, 12, 48, 00),
+                DrawSpan = new TimeSpan(0, 0, 0, 2),
+                EnableEEWWave = false,
+                Size = new(1080),
+                LatSta = 30,
+                LatEnd = 50,
+                LonSta = 130f,
+                LonEnd = 150f,
+                Colors = new()
+            };
 
         rd:
 
@@ -156,7 +171,7 @@ namespace EEWReplayer
                 var colorConfig = new Dictionary<int, Intensity>();
                 foreach (var drawEEW in drawEEWList)
                 {
-                    foreach (var area in drawEEW.EEWs[0].IntensityAreas)//Lgでも
+                    foreach (var area in drawEEW.EEWs[0].IntensityLgAreas)//Lgでも
                     {
                         foreach (var code in area.AreaCodes)
                         {
