@@ -117,7 +117,7 @@ namespace EEWReplayer.Utils
             "---" => Intensity.Unknown,
             "<level>" => Intensity.Level,
             "予測なし" => Intensity.None,//「予測震度なし」
-            "" => Intensity.None,
+            "" => Intensity.S0,//震度0は表示されない？　https://www.data.jma.go.jp/eew/data/nc/pub_hist/2026/10/20261016123810/fc/index.html
             "長周期地震動階級０" => Intensity.L0,
             "長周期地震動階級１" => Intensity.L1,
             "長周期地震動階級２" => Intensity.L2,
