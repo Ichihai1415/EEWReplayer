@@ -20,10 +20,10 @@ namespace EEWReplayer.Devs
         {
             //await GetAllEEW();
             //JMAXML2OriginalJSON();
-            //await StatisticsMaker();
+            await StatisticsMaker();
             //DataMerger();
 
-            await Draw.DrawFlowEx();
+            //await Draw.DrawFlowEx();
         }
 
         internal void ChangeImage(Image img)
@@ -176,15 +176,15 @@ namespace EEWReplayer.Devs
                 LonEnd = 150,
                 Size = new(1000, 1000),
                 Colors = new()
-                {
-                    //LineColor = Color.Black,
-                    //BackgroundColor = Color.White,
-                    //DefaultFillColor = new SolidBrush(Color.White)
+                //{
+                //    //LineColor = Color.Black,
+                //    //BackgroundColor = Color.White,
+                //    //DefaultFillColor = new SolidBrush(Color.White)
 
-                    LineColor = Color.White,
-                    BackgroundColor = Color.Black,
-                    DefaultFillColor = new SolidBrush(Color.Black)
-                }
+                //    LineColor = Color.White,
+                //    BackgroundColor = Color.Black,
+                //    DefaultFillColor = new SolidBrush(Color.Black)
+                //}
             };
             var jsonFiles = Directory.EnumerateFiles(DIR, "*.json", SearchOption.AllDirectories);
             var datas = new List<Data>();
@@ -216,23 +216,38 @@ namespace EEWReplayer.Devs
                 await Task.Delay(1);
             }
             Console.WriteLine("読み込み完了");
-            //Form1.f2.AddLine("warn: codes");
-            //foreach (var kvp in codeCounter.OrderBy(x => x.Key))
-            //    Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
-            //Form1.f2.AddLine("---\nwarn: codes");
-            //foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
-            //    Form1.f2.AddLine($"{kvp.Key} {ConvertSource.AreaForecastE_Code2Name[kvp.Key]}: {kvp.Value}");
+            var max = codeCounter.Values.Max();
 
-            //var c = codeCounter.ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb(x.Value * 2, 255, 0, 0)));
-            var c = codeCounter.Where(x => x.Value > 0).ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb((int)(Math.Log10(x.Value) * (255d / Math.Log10(codeCounter.Values.Max()))), 255, 0, 0)));
-            drawConfig.Colors.FillColors = c;
-            Console.WriteLine("描画中");
-            var img = new Bitmap(drawConfig.Size.Width, drawConfig.Size.Height);
-            using var g = Graphics.FromImage(img);
-            g.Clear(drawConfig.Colors.BackgroundColor);
-            Draw.DrawMap(g, drawConfig);
-            img.Save("warns.png", ImageFormat.Png);
-            Form1.fd.ChangeImage(img);
+            Form1.f2.AddLine("warn: codes\ncode,name,count");
+            foreach (var kvp in codeCounter.OrderBy(x => x.Key))
+                Form1.f2.AddLine($"{kvp.Key},{ConvertSource.AreaForecastE_Code2Name[kvp.Key]},{kvp.Value}");
+            Form1.f2.AddLine("---\nwarn: codes\ncode,name,count");
+            foreach (var kvp in codeCounter.OrderByDescending(x => x.Value))
+                Form1.f2.AddLine($"{kvp.Key},{ConvertSource.AreaForecastE_Code2Name[kvp.Key]},{kvp.Value}");
+
+            //線形
+            var c1 = codeCounter.ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb(x.Value * 255 / max, 255, 0, 0)));
+
+            //対数
+            var c2 = codeCounter.Where(x => x.Value > 0).ToDictionary(x => x.Key, x => new SolidBrush(Color.FromArgb((int)(Math.Log10(x.Value) * 255d / Math.Log10(max)), 255, 0, 0)));
+
+            drawConfig.Colors.FillColors = c1;
+            Console.WriteLine("描画中1");
+            var img1 = new Bitmap(drawConfig.Size.Width, drawConfig.Size.Height);
+            using var g1 = Graphics.FromImage(img1);
+            g1.Clear(drawConfig.Colors.BackgroundColor);
+            Draw.DrawMap(g1, drawConfig);
+            img1.Save("warns_line.png", ImageFormat.Png);
+
+            drawConfig.Colors.FillColors = c2;
+            Console.WriteLine("描画中2");
+            var img2 = new Bitmap(drawConfig.Size.Width, drawConfig.Size.Height);
+            using var g2 = Graphics.FromImage(img2);
+            g2.Clear(drawConfig.Colors.BackgroundColor);
+            Draw.DrawMap(g2, drawConfig);
+            img2.Save("warns_log.png", ImageFormat.Png);
+
+            Form1.fd.ChangeImage(img1);
 
         }
 

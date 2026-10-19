@@ -674,11 +674,11 @@ namespace EEWReplayer.Utils
         }
         public class C_Colors
         {
-            public Color LineColor { get; init; } = Color.White;
+            public Color LineColor { get; init; } = Color.Black;
 
-            public Color BackgroundColor { get; init; } = Color.FromArgb(20, 40, 60);
+            public Color BackgroundColor { get; init; } = Color.White;
 
-            public SolidBrush DefaultFillColor { get; init; } = new(Color.FromArgb(100, 100, 150));
+            public SolidBrush DefaultFillColor { get; init; } = new(Color.FromArgb(0, 100, 100, 150));
 
             public Dictionary<int, SolidBrush> FillColors { get; set; } = [];
 
